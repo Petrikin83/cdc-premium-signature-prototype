@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apple Mail / iPhone — Award Below Contacts Layout Test</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f2f2f2;
+      color: #1a1a1a;
+      font-size: 14px;
+      line-height: 1.5;
+      padding: 32px 24px 56px;
+    }
+    .page-header {
+      max-width: 760px;
+      margin: 0 auto 20px;
+      background: #1a1a2e;
+      color: #fff;
+      padding: 20px 26px;
+      border-bottom: 3px solid #F16623;
+      border-radius: 4px;
+    }
+    .page-header h1 { font-size: 17px; font-weight: 700; margin-bottom: 5px; }
+    .page-header p  { font-size: 11px; color: rgba(255,255,255,.55); margin-top: 3px; line-height: 1.5; }
+    .notice {
+      max-width: 760px;
+      margin: 0 auto 20px;
+      background: #fff8e6;
+      border: 1px solid #f0d080;
+      border-radius: 4px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: #7a5200;
+      line-height: 1.55;
+    }
+    .notice strong { color: #5a3800; }
+    .rationale {
+      max-width: 760px;
+      margin: 0 auto 24px;
+      background: #fff;
+      border: 1px solid #d0d0d0;
+      border-radius: 4px;
+      padding: 16px 20px;
+    }
+    .rationale h2 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #888;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #eee;
+    }
+    .rationale table { border-collapse: collapse; width: 100%; font-size: 12px; }
+    .rationale td { padding: 5px 10px 5px 0; vertical-align: top; color: #333; line-height: 1.5; }
+    .rationale td:first-child { font-weight: 700; color: #1a1a2e; width: 180px; white-space: nowrap; }
+    .preview-label {
+      max-width: 760px;
+      margin: 0 auto 8px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #888;
+    }
+    .preview-shell {
+      max-width: 760px;
+      margin: 0 auto 28px;
+      background: #e8e8e8;
+      padding: 28px 32px;
+      border-radius: 4px;
+      display: block;
+    }
+    .testing {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #d0d0d0;
+      border-radius: 4px;
+      padding: 16px 20px;
+    }
+    .testing h2 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #888;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #eee;
+    }
+    .testing ol { font-size: 12px; color: #333; line-height: 1.6; padding-left: 18px; }
+    .testing li { margin-bottom: 5px; }
+    .testing .note {
+      margin-top: 12px;
+      font-size: 11px;
+      color: #888;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- Page header                                                            -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<div class="page-header">
+  <h1>Apple Mail / iPhone — Award Below Contacts Layout Test</h1>
+  <p>TEST FILE ONLY &mdash; generator files not modified &middot; Gmail not touched &middot; no commit/push</p>
+  <p>New direction: identity &rarr; divider &rarr; contacts &rarr; address (if filled) &rarr; award &rarr; divider &rarr; disclaimer</p>
+</div>
+
+<div class="notice">
+  <strong>Prototype only.</strong> This file tests the approved Apple Mail / iPhone layout direction
+  with the award banner below contacts. If approved, the live generator template
+  (<code>js/templates/apple-mail-template.js</code>) will be updated separately.
+  The Gmail template and all generator behavior are unchanged.
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- Design rationale                                                       -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<div class="rationale">
+  <h2>Design decisions</h2>
+  <table>
+    <tr>
+      <td>Outer table width</td>
+      <td>340px — validated in Phase 2; resolved iPhone Settings clipping; preserves identity breathing room</td>
+    </tr>
+    <tr>
+      <td>Logo width</td>
+      <td>92px — same as approved template; recognizable, not oversized</td>
+    </tr>
+    <tr>
+      <td>Identity column</td>
+      <td>236px (340 &minus; 92 &minus; 12 spacer = 236px)</td>
+    </tr>
+    <tr>
+      <td>Award image width</td>
+      <td>200px — 59% of table width; left-aligned; legible FT text at this size; 140px negative space to the right reads as "credential badge" not hero banner; wider would compete with identity, narrower would look incidental</td>
+    </tr>
+    <tr>
+      <td>Contacts structure</td>
+      <td>One &lt;tr&gt; per contact line — maximum per-row bgcolor protection against dark mode inversion</td>
+    </tr>
+    <tr>
+      <td>Address placement</td>
+      <td>Below contacts, above award; no icon; 10.5px/lighter color — visually subordinate; conditional in generator (not rendered if empty)</td>
+    </tr>
+    <tr>
+      <td>Award placement</td>
+      <td>Full-width row above lower divider; sits naturally as a credential conclusion to the contact block</td>
+    </tr>
+    <tr>
+      <td>Dark mode protection</td>
+      <td>bgcolor="#ffffff" on every td; background-color:#ffffff inline on every cell and text container; explicit text colors on all elements; style block with -webkit-text-size-adjust and color-scheme:light</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- Signature preview                                                      -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<p class="preview-label">Signature preview (on gray = simulated email background)</p>
+<div class="preview-shell">
+
+  <!--
+    Apple Mail / iPhone signature — award-below-contacts layout
+    Width: 340px | Logo: 92px | Award: 200px image
+    Layout: identity → divider → contacts → address → award → divider → disclaimer
+    Dark mode: bgcolor + inline bg on every cell, color-scheme:light in style block
+  -->
+
+  <style>
+    * { -webkit-text-size-adjust: 100% !important; }
+    :root { color-scheme: light; supported-color-schemes: light; }
+  </style>
+
+  <table width="340" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff"
+       style="border-collapse:collapse; table-layout:fixed;
+              width:340px; max-width:340px; background-color:#ffffff;">
+
+    <!-- ── Column widths: 92 logo + 12 spacer + 236 identity = 340 px ── -->
+
+    <!-- ── Identity ── -->
+    <tr>
+      <td width="92" valign="middle" bgcolor="#ffffff"
+          style="background-color:#ffffff; padding:13px 0 13px 0; vertical-align:middle;">
+        <img src="https://static.tildacdn.com/tild6633-3962-4537-b532-383239613561/logo-cdc-badge.png"
+             width="92" alt="CDC"
+             style="display:block; border:0; height:auto; width:92px;">
+      </td>
+
+      <td width="12" bgcolor="#ffffff" style="background-color:#ffffff;"></td>
+
+      <td width="236" valign="middle" bgcolor="#ffffff"
+          style="background-color:#ffffff; padding:13px 0 13px 0; vertical-align:middle;">
+        <p style="font-family:Arial,Helvetica,sans-serif; font-size:21px; font-weight:700;
+                  color:#1a1a2e; line-height:1.15; margin:0 0 4px 0;
+                  background-color:#ffffff;">Artem Petrikin</p>
+        <p style="font-family:Arial,Helvetica,sans-serif; font-size:13px; font-weight:400;
+                  color:#555555; line-height:1.3; margin:0 0 3px 0;
+                  background-color:#ffffff;">IT Specialist</p>
+        <p style="font-family:Arial,Helvetica,sans-serif; font-size:13px; font-weight:600;
+                  color:#F16623; line-height:1.3; margin:0;
+                  background-color:#ffffff;">Cableway Development Company</p>
+      </td>
+    </tr>
+
+    <!-- ── Divider ── -->
+    <tr>
+      <td colspan="3" height="1" bgcolor="#e0e0e0"
+          style="height:1px; background-color:#e0e0e0; font-size:1px; line-height:1px;"></td>
+    </tr>
+
+    <!-- ── Phone ── -->
+    <tr>
+      <td colspan="3" bgcolor="#ffffff"
+          style="background-color:#ffffff; padding:10px 0 4px 0; vertical-align:middle;">
+        <img src="https://static.tildacdn.com/tild3830-6235-4634-b839-666338353131/icon-phone.png"
+             width="22" height="22" alt="Phone"
+             style="display:inline-block; vertical-align:middle; border:0;"><a
+          href="tel:+79032396260"
+          style="font-family:Arial,Helvetica,sans-serif; font-size:13px; font-weight:400;
+                 color:#333333 !important; text-decoration:none;
+                 vertical-align:middle; margin-left:6px; display:inline-block;
+                 white-space:nowrap; background-color:#ffffff;"
+        >+7&nbsp;903&nbsp;239&nbsp;62&nbsp;60</a>
+      </td>
+    </tr>
+
+    <!-- ── Email ── -->
+    <tr>
+      <td colspan="3" bgcolor="#ffffff"
+          style="background-color:#ffffff; padding:4px 0 4px 0; vertical-align:middle;">
+        <img src="https://static.tildacdn.com/tild6464-6630-4135-a161-363032613664/icon-email.png"
+             width="22" height="22" alt="Email"
+             style="display:inline-block; vertical-align:middle; border:0;"><a
+          href="mailto:asp@cdc.company"
+          style="font-family:Arial,Helvetica,sans-serif; font-size:13px; font-weight:400;
+                 color:#333333 !important; text-decoration:none;
+                 vertical-align:middle; margin-left:6px; display:inline-block;
+                 white-space:nowrap; background-color:#ffffff;"
+        >asp@cdc.company</a>
+      </td>
+    </tr>
+
+    <!-- ── Website ── -->
+    <tr>
+      <td colspan="3" bgcolor="#ffffff"
+          style="background-color:#ffffff; padding:4px 0 10px 0; vertical-align:middle;">
+        <img src="https://static.tildacdn.com/tild3433-6265-4665-b766-326237343934/icon-web.png"
+             width="22" height="22" alt="Website"
+             style="display:inline-block; vertical-align:middle; border:0;"><a
+          href="https://cdc.company"
+          style="font-family:Arial,Helvetica,sans-serif; font-size:13px; font-weight:400;
+                 color:#333333 !important; text-decoration:none;
+                 vertical-align:middle; margin-left:6px; display:inline-block;
+                 white-space:nowrap; background-color:#ffffff;"
+        >cdc.company</a>
+      </td>
+    </tr>
+
+    <!-- ── Office address (conditional — rendered only if filled in generator) ── -->
+    <tr>
+      <td colspan="3" bgcolor="#ffffff"
+          style="background-color:#ffffff; padding:0 0 10px 0;">
+        <span style="font-family:Arial,Helvetica,sans-serif; font-size:10.5px; font-weight:600;
+                     color:#555555; line-height:1.35;
+                     background-color:#ffffff;">Office:</span><span
+          style="font-family:Arial,Helvetica,sans-serif; font-size:10.5px; font-weight:400;
+                 color:#666666; line-height:1.35;
+                 background-color:#ffffff;"> Dubai office 454</span>
+      </td>
+    </tr>
+
+    <!-- ── Award banner ── -->
+    <tr>
+      <td colspan="3" bgcolor="#ffffff"
+          style="background-color:#ffffff; padding:0 0 10px 0;">
+        <img src="https://static.tildacdn.com/tild3065-3964-4339-b466-326436663935/award-banner.png"
+             width="200" alt="Financial Times 1000 Europe's Fastest Growing Companies 2025 — Ranked 3rd in Europe"
+             style="display:block; border:0; height:auto; width:200px; max-width:200px;">
+      </td>
+    </tr>
+
+    <!-- ── Divider ── -->
+    <tr>
+      <td colspan="3" height="1" bgcolor="#e0e0e0"
+          style="height:1px; background-color:#e0e0e0; font-size:1px; line-height:1px;"></td>
+    </tr>
+
+    <!-- ── Disclaimer ── -->
+    <tr>
+      <td colspan="3" bgcolor="#ffffff"
+          style="background-color:#ffffff; padding:8px 0 13px 0;">
+        <span style="font-family:Arial,Helvetica,sans-serif; font-size:9.5px; font-weight:400;
+                     color:#666666; line-height:1.45; display:block;
+                     white-space:normal; overflow-wrap:break-word; word-break:normal;
+                     background-color:#ffffff;">
+          This email and any files transmitted with it are confidential and intended solely
+          for the use of the individual or entity to whom they are addressed. If you have
+          received this email in error, please notify the system manager. This message
+          contains confidential information and is intended only for the individual named.
+          CDC Cableway Development Company and its affiliates accept no liability for the
+          content of this email, or for the consequences of any actions taken on the basis
+          of the information provided, unless that information is subsequently confirmed
+          in writing.
+        </span>
+      </td>
+    </tr>
+
+  </table>
+
+</div><!-- /preview-shell -->
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- Testing instructions                                                   -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<div class="testing">
+  <h2>How to test on iPhone</h2>
+  <ol>
+    <li>Open this file in Safari on iPhone (or transfer it via AirDrop / iCloud Drive).</li>
+    <li>Long-press the signature table &rarr; <strong>Select All</strong> &rarr; <strong>Copy</strong>.</li>
+    <li>Go to <strong>Settings &rarr; Mail &rarr; Signature</strong>.</li>
+    <li>Tap the signature field &rarr; select all existing text &rarr; <strong>Paste</strong>.</li>
+    <li>Verify: no horizontal clipping on the right edge, white background preserved, all text readable.</li>
+    <li>Switch iPhone to <strong>Dark Mode</strong> and verify: background remains white, text remains readable, no color inversion on any element.</li>
+    <li>Compose a new email and check the signature in the compose view and in a received email.</li>
+  </ol>
+  <p class="note">
+    If approved, this layout replaces the current Apple Mail template in
+    <code>js/templates/apple-mail-template.js</code>. The Gmail template is not affected.
+  </p>
+</div>
+
+</body>
+</html>

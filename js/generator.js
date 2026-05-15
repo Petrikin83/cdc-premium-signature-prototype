@@ -27,6 +27,7 @@
   const previewFrame     = $('preview-frame');
   const previewWarnings  = $('preview-warnings');
   const copyBtn          = $('copy-btn');
+  const appleBtn         = $('apple-btn');
   const resetBtn         = $('reset-btn');
   const disclaimerToggle  = $('disclaimer-toggle');
   const disclaimerSection = $('disclaimer-section');
@@ -38,6 +39,7 @@
   const fallbackHtml     = $('fallback-html');
 
   let currentSignatureHtml = '';
+  let currentAppleHtml     = '';
   const touched = new Set(); // required fields the user has blurred
   let validateAll = false;   // true after copy is clicked
 
@@ -51,6 +53,7 @@
     });
 
     copyBtn.addEventListener('click', copySignature);
+    appleBtn.addEventListener('click', copyAppleMail);
     resetBtn.addEventListener('click', resetForm);
     disclaimerToggle.addEventListener('click', toggleDisclaimer);
     disclaimerReset.addEventListener('click', resetDisclaimer);
@@ -131,6 +134,7 @@
     };
 
     currentSignatureHtml = buildGmailSignature(data);
+    currentAppleHtml     = buildAppleMailSignature(data);
     updatePreview(currentSignatureHtml);
     updateWarnings(Object.values(warnings));
   }
@@ -225,6 +229,37 @@
     setTimeout(() => {
       copyBtn.textContent = orig;
       copyBtn.classList.remove('btn--copied');
+    }, 2000);
+  }
+
+  // ── Apple Mail copy ────────────────────────────────────────────────────────
+  async function copyAppleMail() {
+    validateAll = true;
+    render();
+    if (!currentAppleHtml) return;
+    try {
+      await copyModern(currentAppleHtml);
+    } catch (e) {
+      try {
+        copyLegacy(currentAppleHtml);
+      } catch (e2) {
+        showFallback(currentAppleHtml);
+        return;
+      }
+    }
+    showAppleCopied();
+  }
+
+  function showAppleCopied() {
+    copyFallback.hidden = true;
+    const orig = appleBtn.textContent;
+    appleBtn.textContent = '✓ Copied for Apple Mail!';
+    appleBtn.style.background = '#2a7a2a';
+    appleBtn.style.color = '#fff';
+    setTimeout(() => {
+      appleBtn.textContent = orig;
+      appleBtn.style.background = '';
+      appleBtn.style.color = '';
     }, 2000);
   }
 

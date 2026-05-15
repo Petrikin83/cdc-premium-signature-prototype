@@ -10,7 +10,7 @@
 
   <header id="page-header">
     <h1>CDC Email Signature Generator</h1>
-    <p class="subtitle">Gmail Web &amp; Desktop &middot; Phase 1</p>
+    <p class="subtitle">Corporate email signature generator &middot; Gmail + Apple Mail/iPhone</p>
   </header>
 
   <main id="main-layout">
@@ -134,14 +134,25 @@
         <button type="button" id="copy-btn" class="btn btn--primary">
           Copy Gmail Signature
         </button>
-        <button type="button" id="apple-btn" class="btn btn--disabled"
-                disabled
-                title="Apple Mail / iPhone support is planned for a future version.">
-          Apple Mail / iPhone &#8212; coming soon
+        <button type="button" id="apple-btn" class="btn btn--secondary">
+          Copy Apple Mail / iPhone Signature
         </button>
         <button type="button" id="reset-btn" class="btn btn--secondary">
           Reset form
         </button>
+      </div>
+
+      <!-- iPhone install hint -->
+      <div id="apple-hint">
+        <p class="apple-hint-title">How to install on iPhone</p>
+        <ol class="apple-hint-steps">
+          <li>Click <strong>Copy Apple Mail / iPhone Signature</strong> above.</li>
+          <li>On your iPhone, open <strong>Settings &rarr; Mail &rarr; Signature</strong>.</li>
+          <li>Tap into the signature field and select all existing text.</li>
+          <li>Paste (long-press &rarr; Paste). The formatted signature appears.</li>
+          <li>Tap <strong>Mail</strong> (top left) to save.</li>
+        </ol>
+        <p class="apple-hint-note">Copy must be done on a Mac or PC. iPhone clipboard does not preserve formatting.</p>
       </div>
 
       <!-- Fallback: shown only if clipboard API is unavailable -->
@@ -162,6 +173,7 @@
   <script src="js/config.js"></script>
   <script src="js/validation.js"></script>
   <script src="js/templates/gmail-template.js"></script>
+  <script src="js/templates/apple-mail-template.js"></script>
   <script src="js/generator.js"></script>
 
 </body>

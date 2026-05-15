@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CDC Email Signature Generator</title>
+  <link rel="stylesheet" href="css/generator-ui.css">
+</head>
+<body>
+
+  <header id="page-header">
+    <h1>CDC Email Signature Generator</h1>
+    <p class="subtitle">Gmail Web &amp; Desktop &middot; Phase 1</p>
+  </header>
+
+  <main id="main-layout">
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!--  Left panel — form                                          -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section id="form-panel">
+      <p class="panel-title">Your details</p>
+
+      <form id="signature-form" novalidate autocomplete="on">
+
+        <!-- First name -->
+        <div class="field-group">
+          <label for="first-name">First name <span class="required">*</span></label>
+          <input type="text" id="first-name" name="first-name"
+                 autocomplete="given-name" placeholder="Anna" maxlength="60">
+          <div class="field-hint">Enter your name as it should appear in the corporate signature.</div>
+          <div class="field-error" id="first-name-error" role="alert" aria-live="polite"></div>
+        </div>
+
+        <!-- Last name -->
+        <div class="field-group">
+          <label for="last-name">Last name <span class="required">*</span></label>
+          <input type="text" id="last-name" name="last-name"
+                 autocomplete="family-name" placeholder="Semenova" maxlength="60">
+          <div class="field-error" id="last-name-error" role="alert" aria-live="polite"></div>
+        </div>
+
+        <!-- Job title -->
+        <div class="field-group">
+          <label for="job-title">Job title <span class="required">*</span></label>
+          <input type="text" id="job-title" name="job-title"
+                 autocomplete="organization-title"
+                 placeholder="Admin &amp; HR Director" maxlength="80">
+          <div class="field-error" id="job-title-error" role="alert" aria-live="polite"></div>
+        </div>
+
+        <!-- Phone -->
+        <div class="field-group">
+          <label for="phone">Phone <span class="required">*</span></label>
+          <input type="tel" id="phone" name="phone"
+                 autocomplete="tel" placeholder="+971 50 421 35 70">
+          <div class="field-hint">For better readability, enter phone with spaces &mdash; e.g. +971 50 421 35 70. Displayed exactly as entered.</div>
+          <div class="field-error" id="phone-error" role="alert" aria-live="polite"></div>
+        </div>
+
+        <!-- Email -->
+        <div class="field-group">
+          <label for="email">Email <span class="required">*</span></label>
+          <input type="email" id="email" name="email"
+                 autocomplete="email" placeholder="name@cdc.company">
+          <div class="field-error" id="email-error" role="alert" aria-live="polite"></div>
+        </div>
+
+        <!-- Website -->
+        <div class="field-group">
+          <label for="website">Website <span class="required">*</span></label>
+          <input type="text" id="website" name="website"
+                 autocomplete="url" placeholder="cdc.company">
+          <div class="field-error" id="website-error" role="alert" aria-live="polite"></div>
+        </div>
+
+        <!-- Office address (optional, collapsed) -->
+        <div class="field-group">
+          <button type="button" id="address-toggle" class="toggle-btn"
+                  aria-expanded="false" aria-controls="address-section">
+            + Office address <span class="badge">optional</span>
+          </button>
+          <div id="address-section" class="collapsible" hidden>
+            <label for="office-address">Office address</label>
+            <input type="text" id="office-address" name="office-address"
+                   placeholder="Office 5, Building 7, Dubai" maxlength="120">
+            <div class="address-hint">
+              Use only an approved public office address.
+              Do not enter personal residential addresses.
+            </div>
+            <div class="address-warning" id="address-warning" role="alert" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <!-- Disclaimer (advanced, collapsed) -->
+        <div class="field-group">
+          <button type="button" id="disclaimer-toggle" class="toggle-btn"
+                  aria-expanded="false" aria-controls="disclaimer-section">
+            &#9662; Disclaimer <span class="badge">advanced</span>
+          </button>
+          <div id="disclaimer-section" class="collapsible" hidden>
+            <div class="disclaimer-warning">
+              &#9888; Disclaimer changes require Legal / Management approval.
+              Do not modify for standard use.
+            </div>
+            <label for="disclaimer-text">Disclaimer text</label>
+            <textarea id="disclaimer-text" name="disclaimer-text" rows="7"></textarea>
+            <button type="button" id="disclaimer-reset" class="btn-text-small">
+              Reset to default disclaimer
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!--  Right panel — live preview + actions                       -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section id="preview-panel">
+
+      <p class="preview-label">Live preview</p>
+
+      <div id="preview-warnings" aria-live="polite"></div>
+
+      <div id="preview-chrome">
+        <iframe id="preview-frame"
+                title="Email signature preview"
+                scrolling="no"
+                frameborder="0"></iframe>
+      </div>
+
+      <div id="action-buttons">
+        <button type="button" id="copy-btn" class="btn btn--primary">
+          Copy Gmail Signature
+        </button>
+        <button type="button" id="apple-btn" class="btn btn--disabled"
+                disabled
+                title="Apple Mail / iPhone support is planned for a future version.">
+          Apple Mail / iPhone &#8212; coming soon
+        </button>
+        <button type="button" id="reset-btn" class="btn btn--secondary">
+          Reset form
+        </button>
+      </div>
+
+      <!-- Fallback: shown only if clipboard API is unavailable -->
+      <div id="copy-fallback" hidden>
+        <div class="fallback-msg">
+          Automatic copy failed. Select all text in the box below and copy manually
+          (Ctrl+C on Windows &middot; Cmd+C on Mac), then paste into Gmail
+          Settings &rarr; See all settings &rarr; General &rarr; Signature.
+        </div>
+        <textarea id="fallback-html" readonly rows="8"
+                  aria-label="Signature HTML for manual copy"></textarea>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/templates/gmail-template.js"></script>
+  <script src="js/generator.js"></script>
+
+</body>
+</html>

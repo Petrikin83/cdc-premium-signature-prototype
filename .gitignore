@@ -1,0 +1,13 @@
+# Internal brand materials — do not publish to public repo
+Brand/
+
+# Internal design reference — do not publish to public repo
+Reference/
+
+# Node / npm
+node_modules/
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db

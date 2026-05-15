@@ -2,9 +2,9 @@
 
 **Project:** CDC Premium Email Signature Generator (Prototype)
 **Path:** `D:\GitHub_signature_generator\cdc-premium-signature-prototype`
-**Document version:** 1.6
+**Document version:** 1.8
 **Date:** 2026-05-15
-**Status:** Architecture / Pre-implementation
+**Status:** Architecture / Pre-implementation — ready for Phase 1 Gmail generator build
 
 ---
 
@@ -34,6 +34,9 @@ Apple Mail iPhone. The primary technical constraints are:
 This document records all confirmed decisions, defines the required asset set, and
 specifies the layout plan for both signature versions before any code is written.
 
+> **Source of truth for Phase 1 build:** `Docs/generator-implementation-plan.md`
+> Where this document and the implementation plan conflict, the implementation plan takes precedence.
+
 ---
 
 ## 2. Confirmed Decisions
@@ -47,7 +50,7 @@ specifies the layout plan for both signature versions before any code is written
 | 5 | Company name (display) | **Cableway Development Company** — shown in the identity block in brand orange. No "CDC" prefix: the badge logo already represents CDC visually; repeating it creates unnecessary duplication. Locked, not editable by employees. |
 | 5a | Company name (legal) | **CDC Cableway Development Company and its affiliates** — used only in the legal disclaimer. Full legal entity name is appropriate there. |
 | 6 | AirBridge UAE / KSA | Out of scope for this project. Do not design or build. |
-| 7 | Central deployment | Future consideration (Phase 9). First version is always manual copy-paste. |
+| 7 | Central deployment | Future consideration (Phase 6). First version is always manual copy-paste. |
 | 8 | Fonts (email) | Email-safe fallback fonts only. No web fonts in generated signature HTML. |
 | 9 | Fonts (generator UI) | Corporate font may be used in the generator page UI if license permits web use. Files to be provided later. |
 | 10 | Icons | Custom-designed SVG source → exported PNG for production. No third-party icon packs. |
@@ -114,7 +117,7 @@ Items are separated by vertical pipe separators (`|`).
 | Web fonts | Not loaded by Gmail or most email clients. | Use email-safe font stack. |
 | Base64 images | Stripped by Gmail. | All images must be external HTTPS URLs in production. |
 | `<style>` blocks | Stripped by Gmail — so no `@media` queries. Gmail version must be 100% inline CSS. | Two separate outputs: Gmail (pure inline) and Apple Mail (has `<style>` block). |
-| 600px total width on mobile | Gmail mobile scales the signature down proportionally. At 375px screen, a 600px table renders at ~62% — text appears smaller, then bumped by iOS. | Acceptable for prototype. Mobile-optimized stacking is Phase 2 enhancement. |
+| 580px total width on mobile | Gmail mobile scales the signature down proportionally. At 375px screen, a 580px table renders at ~65% — text appears smaller, then bumped by iOS. | Acceptable for prototype. Mobile-optimized stacking is Phase 2 enhancement. |
 | FT / Statista logos (inside award-banner.png) | Third-party trademarks. | Confirmed decision: company has rights. Verify before production. |
 | Dark mode | Email clients may invert colors — white background could become dark, making orange text hard to read. | Force `bgcolor="#ffffff"` attribute AND `background-color: #ffffff` on all `<td>` cells. Also add `color-scheme: light` in Apple Mail `<style>` block. |
 
@@ -167,17 +170,29 @@ cdc-premium-signature-prototype/
 │   └── icon-web.png                         ← contact icon PNG for email (TO EXPORT — production step)
 │
 ├── Prototypes/
-│   ├── gmail-signature.html                 ← static Gmail prototype (Phase 2)
-│   └── applemail-signature.html             ← static Apple Mail prototype (Phase 3)
+│   ├── gmail-signature-tilda-assets.html    ← approved Gmail baseline (Tilda-hosted assets) ✅
+│   ├── gmail-signature-github-pages-balanced-compact-logo-v3.html  ← reference baseline (GitHub Pages URLs) ✅
+│   └── gmail-signature-long-name-stress-test.html  ← long-name QA validation ✅
 │
-└── index.html                               ← generator UI (Phase 5)
+├── css/                                     ← Phase 1 — planned
+│   └── generator-ui.css
+│
+├── js/                                      ← Phase 1 — planned
+│   ├── config.js
+│   ├── generator.js
+│   ├── validation.js
+│   └── templates/
+│       ├── gmail-template.js
+│       └── apple-mail-template.js           ← Phase 2 reserved
+│
+└── index.html                               ← generator UI (Phase 1 — planned)
 ```
 
 **Notes:**
 - `Assets/` contains all production-ready files and SVG source files. SVG files are source/master format; PNG files are for email use only.
-- PNG icon files (`icon-phone.png`, `icon-email.png`, `icon-web.png`) do not yet exist. They are a production step — not required for prototype HTML testing (SVGs can be used in the prototype browser preview).
+- PNG icon files (`icon-phone.png`, `icon-email.png`, `icon-web.png`) do not yet exist. They are a production step — not required for prototype HTML testing.
 - `Prototypes/` contains static test pages — not the generator, just the raw signature HTML for browser + client testing.
-- `index.html` is the generator. Created in Phase 5.
+- `index.html` is the generator. Planned for Phase 1 build.
 
 ---
 
@@ -191,9 +206,9 @@ cdc-premium-signature-prototype/
 | `Assets/icon-phone.svg` | ✅ Exists | SVG source — approved v1 outline style | Orange outline circle + phone handset pictogram |
 | `Assets/icon-email.svg` | ✅ Exists | SVG source — approved v1 outline style | Orange outline circle + envelope pictogram |
 | `Assets/icon-web.svg` | ✅ Exists | SVG source — approved v1 outline style | Orange outline circle + globe pictogram |
-| `Assets/icon-phone.png` | ⏳ Production step | Contact row phone icon for email | Export from SVG at 56×56px when moving to production |
-| `Assets/icon-email.png` | ⏳ Production step | Contact row email icon for email | Export from SVG at 56×56px when moving to production |
-| `Assets/icon-web.png` | ⏳ Production step | Contact row globe icon for email | Export from SVG at 56×56px when moving to production |
+| `Assets/icon-phone.png` | ⏳ Production step | Contact row phone icon for email | Export from SVG at 48×48px when moving to production |
+| `Assets/icon-email.png` | ⏳ Production step | Contact row email icon for email | Export from SVG at 48×48px when moving to production |
+| `Assets/icon-web.png` | ⏳ Production step | Contact row globe icon for email | Export from SVG at 48×48px when moving to production |
 
 **Logo asset status: resolved.** Both files are confirmed present. No further action needed for logo assets.
 
@@ -206,8 +221,8 @@ cdc-premium-signature-prototype/
 | Property | Value |
 |---|---|
 | File | `Assets/logo-cdc-badge.png` |
-| Displayed size in signature | 80px wide × auto height |
-| Recommended file resolution | 160px wide (2x for retina), transparent background |
+| Displayed size in signature | 104px wide × auto height |
+| Recommended file resolution | 208px wide (2x for retina), transparent background |
 | Format | PNG-24 with alpha transparency |
 | Color | Orange on transparent |
 | Notes | Do not embed wordmark. The company name appears as separate HTML text below the badge in the signature. |
@@ -217,8 +232,8 @@ cdc-premium-signature-prototype/
 | Property | Value |
 |---|---|
 | File | `Assets/award-banner.png` |
-| Displayed size in signature | 220px wide × auto height |
-| Recommended file resolution | 440px wide (2x for retina) |
+| Displayed size in signature | 184px wide × auto height |
+| Recommended file resolution | 368px wide (2x for retina) |
 | Format | PNG-24 with white or transparent background |
 | Current state | The existing file appears production-quality. Verify pixel dimensions before use. |
 | Notes | Displayed as a single `<img>` block in the award column. No additional HTML wrapping needed. |
@@ -231,8 +246,8 @@ SVG source files are approved and available. PNG export is a production step onl
 |---|---|
 | SVG source files | `Assets/icon-phone.svg`, `Assets/icon-email.svg`, `Assets/icon-web.svg` |
 | PNG files (production) | `Assets/icon-phone.png`, `Assets/icon-email.png`, `Assets/icon-web.png` (to export) |
-| Displayed size in signature | 28px × 28px (square) |
-| Recommended PNG resolution | 56px × 56px (2x for retina) |
+| Displayed size in signature | 24px × 24px (square) |
+| Recommended PNG resolution | 48px × 48px (2x for retina) |
 | Format | PNG-24 with transparent background |
 | Approved icon style | v1 outline: orange outline circle (r=21, stroke 2.2, `#F16623`) + matching orange pictogram on transparent background |
 | Notes | Prototype HTML can use SVGs via `<img src>` for browser testing. Production email must use PNG. |
@@ -244,16 +259,16 @@ SVG source files are approved and available. PNG export is a production step onl
 ### 7.1 Specialist Review
 
 **Brand / Corporate Identity Specialist:**
-The icons must reflect CDC's visual identity: rounded geometry (consistent with the rounded-rectangle CDC badge), orange color matching the brand primary, and a clean uncluttered style that reads at 28px. Avoid icons that feel "startup-y" or generic. The set should look like they were commissioned as part of the brand kit.
+The icons must reflect CDC's visual identity: rounded geometry (consistent with the rounded-rectangle CDC badge), orange color matching the brand primary, and a clean uncluttered style that reads at 24px. Avoid icons that feel "startup-y" or generic. The set should look like they were commissioned as part of the brand kit.
 
 **Premium Email Signature Designer:**
-At 28px rendered (56px source for 2x), the pictograms inside the circle must be simple and instantly recognizable. A phone handset receiver, a closed envelope, and a globe with latitude/longitude lines are the correct conventional choices. Stroke weight inside the circle should be 2.5–3px at 56px canvas, not thinner. The circle must be solid filled (not outlined) — a solid orange disc with white pictogram reads better in email at small size than an outlined circle.
+At 24px rendered (48px source for 2x), the pictograms inside the circle must be simple and instantly recognizable. A phone handset receiver, a closed envelope, and a globe with latitude/longitude lines are the correct conventional choices. Stroke weight should be 2.2px at 48px viewBox, not thinner. The **v1 outline style is approved** — orange outline circle with matching orange pictogram on transparent background. The solid-disc approach was evaluated and rejected (v3 icons) as too visually dominant relative to the CDC badge logo and award banner.
 
 **HTML Email Compatibility Expert:**
 Do not use SVG directly in Gmail signatures. Gmail strips inline `<svg>` elements. SVG in `<img src="">` tags is only partially supported (Gmail web may show it but Gmail mobile may not). The only universally safe format for icons in email is PNG. Design the icons as SVG (as source files for quality and future editing), then export as PNG at 2x resolution. Use the PNG files in the signature `<img>` tags.
 
 **UX Designer:**
-Three icons in a horizontal row separated by `|` pipe characters. Each icon has a `<img>` tag followed by a non-breaking space and the contact detail text. The visual grouping (icon + text) should be clear. Icon size relative to the adjacent text: icon at 28px, contact text at 14px — ratio is correct. Do not make icons smaller than 24px — at that size, the pictogram inside the circle becomes unreadable in most email clients.
+Three icons in a horizontal row separated by `|` pipe characters. Each icon has a `<img>` tag followed by a non-breaking space and the contact detail text. The visual grouping (icon + text) should be clear. Icon size relative to the adjacent text: icon at 24px, contact text at 13px — ratio is correct. Do not make icons smaller than 24px — at that size, the pictogram inside the circle becomes unreadable in most email clients.
 
 ### 7.2 Icon Style Specification
 
@@ -263,7 +278,7 @@ Three icons in a horizontal row separated by `|` pipe characters. Each icon has 
 | Color (circle stroke) | `#F16623` (CDC brand orange, to be confirmed) |
 | Pictogram color | `#F16623` (same orange as circle) |
 | Pictogram style | Minimal, geometric, single-weight stroke, 2.2px at 48px viewBox |
-| ViewBox / canvas | 48 × 48 SVG viewBox; export PNG at 56 × 56px (displayed at 28 × 28px) |
+| ViewBox / canvas | 48 × 48 SVG viewBox; export PNG at 48 × 48px (displayed at 24 × 24px) |
 | Background | Transparent |
 | Visual weight | Lighter, restrained — appropriate for corporate email signature at small sizes |
 | Rendering | Recognizable at 24–28px; semantic clarity prioritized over visual boldness |
@@ -292,7 +307,7 @@ Three icons in a horizontal row separated by `|` pipe characters. Each icon has 
 
 ```
 Step 1: SVG source files are done — Assets/icon-phone.svg, icon-email.svg, icon-web.svg ✅
-Step 2: (Production step) Export SVGs to PNG at 56×56px → Assets/icon-phone.png, icon-email.png, icon-web.png
+Step 2: (Production step) Export SVGs to PNG at 48×48px → Assets/icon-phone.png, icon-email.png, icon-web.png
 Step 3: Validate in a test email that icons render correctly in Gmail and Apple Mail
 Step 4: Upload PNGs to the company's public HTTPS asset server
 ```
@@ -310,7 +325,7 @@ Step 4: Upload PNGs to the company's public HTTPS asset server
 
 ### 7.6 How to Visually Test Icons
 
-1. In prototype HTML, display the icon PNGs at `28px × 28px` alongside contact text.
+1. In prototype HTML, display the icon PNGs at `24px × 24px` alongside contact text.
 2. Send a test email from the signature to:
    - A Gmail address — check in Gmail Web (Chrome) and Gmail iOS app.
    - An email address accessible via Apple Mail on iPhone.
@@ -422,10 +437,10 @@ devices in particular, which is relevant for the Apple Mail version.
 
 ### 9.4 Corporate Font Files for Prototype
 
-- Corporate font files are **not needed** for Phase 1 (static signature prototypes).
-- They are needed in Phase 5 (generator UI build) if the brand license permits web use.
+- Corporate font files are **not needed** for Phase 0 (static signature prototypes) or Phase 1 (generator build).
+- They may be used in the generator UI page (Phase 1) if the brand license permits web use.
 - At that point, obtain: WOFF2 file(s) + the license confirmation for web use.
-- Do not unblock the prototype on this dependency.
+- Do not unblock the generator build on this dependency.
 
 ---
 
@@ -434,23 +449,25 @@ devices in particular, which is relevant for the Apple Mail version.
 ### 10.1 Overall Structure
 
 ```
-<table width="600" cellpadding="0" cellspacing="0" bgcolor="#ffffff">
+<table width="580" cellpadding="0" cellspacing="0" bgcolor="#ffffff">
 
   <!-- ROW 1: Identity block + Award block -->
   <tr>
-    <td width="90" valign="middle">
-      <!-- Logo badge: <img src="logo-cdc-badge.png" width="80"> -->
+    <td width="104" valign="middle">
+      <!-- Logo badge: <img src="logo-cdc-badge.png" width="104"> -->
     </td>
-    <td width="20"></td>   <!-- spacer -->
-    <td width="240" valign="middle">
-      <!-- Name (bold, large, dark navy) -->
-      <!-- Job title (regular, dark) -->
-      <!-- "CDC Cableway Development Company" (orange) -->
+    <td width="18"></td>   <!-- spacer -->
+    <td width="259" valign="middle">
+      <!-- Name (bold, 21px, dark navy #1a1a2e) -->
+      <!-- Job title (13px, #555555) -->
+      <!-- "Cableway Development Company" (13px, orange #F16623) -->
     </td>
-    <td width="10" style="border-left: 1px solid #e0e0e0;"></td>  <!-- vertical rule -->
-    <td width="20"></td>   <!-- spacer -->
-    <td width="220" valign="middle">
-      <!-- Award block: <img src="award-banner.png" width="220"> -->
+    <td width="1" valign="middle">
+      <!-- Floating divider: nested 1×64px table, vertically centered -->
+    </td>
+    <td width="14"></td>   <!-- spacer -->
+    <td width="184" valign="middle">
+      <!-- Award block: <img src="award-banner.png" width="184"> -->
     </td>
   </tr>
 
@@ -465,15 +482,15 @@ devices in particular, which is relevant for the Apple Mail version.
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td>
-            <img src="icon-phone.png" width="28" height="28"> &nbsp; +971 XX XXX XX XX
+            <img src="icon-phone.png" width="24" height="24"> &nbsp; +971 XX XXX XX XX
           </td>
           <td width="1" style="border-left: 1px solid #e0e0e0;"></td>
           <td>
-            <img src="icon-email.png" width="28" height="28"> &nbsp; name@cdc.company
+            <img src="icon-email.png" width="24" height="24"> &nbsp; name@cdc.company
           </td>
           <td width="1" style="border-left: 1px solid #e0e0e0;"></td>
           <td>
-            <img src="icon-web.png" width="28" height="28"> &nbsp; cdc.company
+            <img src="icon-web.png" width="24" height="24"> &nbsp; cdc.company
           </td>
         </tr>
       </table>
@@ -488,52 +505,52 @@ devices in particular, which is relevant for the Apple Mail version.
   <!-- ROW 5: Disclaimer -->
   <tr>
     <td colspan="6">
-      <!-- Legal disclaimer text at 10px, color #666666, text-align: justify -->
+      <!-- Legal disclaimer text at 10px, color #666666, line-height 1.45, text-align: left -->
     </td>
   </tr>
 
 </table>
 ```
 
+> **Note:** This is a structural sketch only. The approved implementation uses a floating divider (nested 1×64px inner table with `valign="middle"` on the outer cell). For exact cell padding, `bgcolor`, and divider implementation, use `Prototypes/gmail-signature-tilda-assets.html` as the source of truth.
+
 ### 10.2 Typography (Gmail Version, Inline CSS)
 
 | Element | Font | Size | Weight | Color |
 |---|---|---|---|---|
-| Employee name | Arial, Helvetica, sans-serif | 25px | 700 (bold) | `#1a1a2e` (dark navy) |
-| Job title | Arial, Helvetica, sans-serif | 15px | 400 | `#555555` |
-| Company name (display) | Arial, Helvetica, sans-serif | 15px | 600 | `#F16623` (brand orange) — text: "Cableway Development Company" |
-| Contact text | Arial, Helvetica, sans-serif | 14px | 400 | `#333333` |
-| Disclaimer | Arial, Helvetica, sans-serif | 11px | 400 | `#888888` — line-height 1.5 — text uses full legal name |
+| Employee name | Arial, Helvetica, sans-serif | 21px | 700 (bold) | `#1a1a2e` (dark navy) |
+| Job title | Arial, Helvetica, sans-serif | 13px | 400 | `#555555` |
+| Company name (display) | Arial, Helvetica, sans-serif | 13px | 600 | `#F16623` (brand orange) — text: "Cableway Development Company" |
+| Contact text | Arial, Helvetica, sans-serif | 13px | 400 | `#333333` |
+| Disclaimer | Arial, Helvetica, sans-serif | 10px | 400 | `#666666` — line-height 1.45 — text uses full legal name |
 
 ### 10.3 Widths and Dimensions
 
 | Element | Width |
 |---|---|
-| Total signature | 640px |
-| Logo badge column | 96px |
-| Spacer (logo → identity) | 24px |
-| Identity text column | 258px |
+| Total signature | 580px |
+| Logo badge column | 104px |
+| Spacer (logo → identity) | 18px |
+| Identity text column | 259px |
 | Vertical separator | 1px (bgcolor td) |
-| Spacer (separator → award) | 21px |
-| Award block column | 240px |
-| Logo badge image | 96px wide, height auto |
-| Award banner image | 240px wide, height auto |
-| Contact icons | 30 × 30px |
+| Spacer (separator → award) | 14px |
+| Award block column | 184px |
+| Logo badge image | 104px wide, height auto |
+| Award banner image | 184px wide, height auto |
+| Contact icons | 24 × 24px |
+| Column math | 104 + 18 + 259 + 1 + 14 + 184 = 580px |
 
 ### 10.4 Spacing
 
 | Element | Padding / Margin |
 |---|---|
-| Vertical padding above identity row | 22px |
-| Vertical padding below identity row | 18px |
-| Gap between name and title | 7px |
-| Gap between title and company | 5px |
-| Contact row vertical padding | 14px top and bottom |
-| Padding right of phone / left of website | 22px |
-| Padding each side of email item | 22px |
-| Gap between icon and contact text | 9px (margin-left on text element) |
-| Disclaimer top padding | 12px |
-| Disclaimer bottom padding | 20px |
+| Top row cell padding (logo + identity + award) | 14px top and bottom |
+| Floating vertical divider height | 64px (vertically centered in row) |
+| Contact row vertical padding | 10px top and bottom |
+| Gap between icon and contact text | per approved template |
+| Disclaimer padding | per approved template |
+
+See `Prototypes/gmail-signature-tilda-assets.html` (approved baseline) for exact padding values on every cell.
 
 ### 10.5 Expected Visual Fidelity vs. Reference
 
@@ -551,6 +568,10 @@ The Gmail version will match the reference at approximately 90–95%:
 ---
 
 ## 11. Apple Mail / iPhone Layout Plan
+
+> **Phase 2 only.** Apple Mail signature generation is not implemented in Phase 1.
+> The Gmail generator is built first; Apple Mail support is added in Phase 2.
+> This section records the planned technical approach for when Phase 2 begins.
 
 ### 11.1 Key Differences From Gmail Version
 
@@ -614,28 +635,37 @@ is why the Gmail version cannot do this.)
 
 ## 12. Generator Fields
 
-| Field | Required | Editable by | Default / Lock | Notes |
-|---|---|---|---|---|
-| First name | Required | Employee | — | Text input |
-| Last name | Required | Employee | — | Text input |
-| Job title | Required | Employee | — | Text input |
-| Department | Optional | Employee | Hidden by default | Toggle to show in signature |
-| Mobile (primary) | Required | Employee | — | Format hint: +971 XX XXX XX XX |
-| Mobile 2 | Optional | Employee | Hidden | Toggle to add second number |
-| Work email | Required | Employee | — | Validated: must contain @ |
-| Work email 2 | Optional | Employee | Hidden | Toggle to add second email |
-| Website | Optional | Employee | `cdc.company` | Pre-filled but editable by employee |
-| Address | Optional | Employee | Hidden | Toggle; shows one-line address under contact |
-| Company name | Locked | IT / Config | `CDC Cableway Development Company` | Not editable; shown in orange |
-| Award block | Default ON | IT / Config | On | Can be toggled off per employee if needed |
-| Legal disclaimer | Locked | IT / Config | Full text from config | Not editable by employee |
+#### Phase 1 — Required fields
 
-**Admin-only / config-only (not in UI):**
-- Logo URL
-- Award banner URL
-- Brand color HEX
-- Disclaimer text
-- Company name
+| Field | Required | Notes |
+|---|---|---|
+| First name | Yes | Separate field — do not use a single "full name" input |
+| Last name | Yes | Separate field |
+| Job title | Yes | Text input |
+| Phone | Yes | International format hint: +971 XX XXX XX XX |
+| Email | Yes | Basic `@` validation |
+| Website | Yes | Pre-filled default: `cdc.company` — editable |
+
+#### Phase 1 — Optional fields
+
+| Field | Required | Notes |
+|---|---|---|
+| Office address | No | Collapsed by default; shows as a second line below contact row |
+| Disclaimer text | No | Advanced / exception use only — collapsed by default; see Section 23 |
+
+#### Locked / config-only (not employee-editable)
+
+| Field | Fixed value | Notes |
+|---|---|---|
+| Company display line | **Cableway Development Company** | Shown in orange in identity block |
+| Logo image URL | Configured in `js/config.js` | Not editable in UI |
+| Award banner URL | Configured in `js/config.js` | Not editable in UI |
+| Brand color | `#F16623` | Configured in `js/config.js` |
+| Disclaimer text | Standard legal text from `js/config.js` | Employee can view/reset but not freely edit |
+
+**Fields not in Phase 1:** Department, secondary phone, secondary email. May be added in a later phase if requested.
+
+See `Docs/generator-implementation-plan.md` Section 3 for full field specification.
 
 ---
 
@@ -721,7 +751,7 @@ signature table:
 
 ```html
 <img src="[URL]/award-banner.png"
-     width="220"
+     width="184"
      height="auto"
      alt="Financial Times | 1000 Europe's Fastest Growing Companies 2025 — Ranked 3rd in Europe"
      style="display: block; border: 0;">
@@ -802,8 +832,8 @@ specific post or attachment ID.)
 
 - **Gmail strips base64-encoded images** from signature HTML when the employee saves
   the signature in Gmail Settings. The images disappear completely.
-- Base64 strings are very large (a 56×56px PNG encodes to ~3,000 characters). Three icons
-  alone would add ~9,000 characters, exceeding Gmail's 10,000-character signature limit.
+- Base64 strings are very large (a 48×48px PNG encodes to ~2,000–3,000 characters). Three icons
+  alone would add ~6,000–9,000 characters, exceeding Gmail's 10,000-character signature limit.
 - Base64 cannot be updated without regenerating and re-pasting the signature.
 
 ### 15.4 Why Not Unstable Cloud-Sharing Links
@@ -924,7 +954,7 @@ Yes. Google Workspace supports centralized email signature management via:
 
 **Phase 1:** Manual copy-paste generator (this project). Always ships first.
 
-**Phase 9 (future):** Evaluate centralized deployment. Recommended path:
+**Phase 6 (future):** Evaluate centralized deployment. Recommended path:
 - Start with Google Apps Script / GAM for pilot on 5–10 users.
 - If successful, consider a third-party tool (Exclaimer) for company-wide rollout.
 - The manual generator should remain available as a fallback even after central deployment,
@@ -1019,63 +1049,56 @@ Yes. Google Workspace supports centralized email signature management via:
 
 ## 19. Implementation Phases
 
-### Phase 1 — Finalize Assets and Architecture (Current)
+### Phase 0 — Assets, Architecture, and Prototype (COMPLETE)
 - [x] Create architecture document
 - [x] Confirm CDC logo assets — `logo-cdc-badge.png` (main) and `logo-cdc-wordmark.png` (backup) both exist
-- [ ] Confirm brand orange HEX value
 - [x] Design contact icon SVG source files — v1 outline system approved (`Assets/icon-phone.svg`, `icon-email.svg`, `icon-web.svg`)
-- [ ] Export contact icons to PNG (56×56px) — production step, not prototype dependency
-- [ ] Confirm image hosting location for prototype (local) and production (HTTPS URL)
+- [x] Create static Gmail signature prototype — iterated through v1, v2, v3; approved at v3
+- [x] Long-name stress test — `Prototypes/gmail-signature-long-name-stress-test.html` (6 name/title combinations)
+- [x] Create Tilda-hosted asset variant — `Prototypes/gmail-signature-tilda-assets.html` (approved Gmail test baseline)
+- [x] Create implementation plan — `Docs/generator-implementation-plan.md`
+- [ ] Export contact icons to PNG (48×48px) — production step, not generator dependency
+- [ ] Confirm brand orange HEX value with brand team
 - [ ] Confirm FT/Statista usage rights in writing
 - [ ] Confirm legal disclaimer text (final approved version)
 
-### Phase 2 — Static Gmail Signature Prototype
-- Create `Prototypes/gmail-signature.html` — a standalone HTML file showing the complete
-  Gmail signature for a sample employee (e.g., "Anna Semenova, Admin & HR Director").
-- No generator logic. Pure HTML with inline CSS.
-- Use local asset paths for prototype (`../Assets/...`).
-- Goal: confirm the visual output matches the reference before building the generator.
+### Phase 1 — Build Gmail Signature Generator (Current)
+- Build `index.html`, `css/generator-ui.css`, `js/config.js`, `js/generator.js`, `js/validation.js`, `js/templates/gmail-template.js`
+- Form with Phase 1 required/optional fields (first name, last name, job title, phone, email, website; optional: office address, disclaimer)
+- Live preview of Gmail signature
+- Copy Gmail Signature button with rich-text clipboard support (`ClipboardItem` + `execCommand` fallback)
+- Long-name font-size reduction logic (≤22 chars → 21px; 23–30 → 20px; >30 → 19px + warning)
+- Asset URLs configurable via `js/config.js`; Tilda URLs used temporarily until company hosting ready
+- See `Docs/generator-implementation-plan.md` for full specification
 
-### Phase 3 — Static Apple Mail / iPhone Prototype
-- Create `Prototypes/applemail-signature.html` — same employee, Apple Mail variant.
-- Includes `<style>` block with responsive rules.
-- Open in Safari on iPhone to test the copy-paste install flow.
+### Phase 2 — Apple Mail / iPhone Signature (Planned, Not Phase 1)
+- Create static Apple Mail prototype — `Prototypes/applemail-signature.html`
+- Build `js/templates/apple-mail-template.js`
+- Add Apple Mail output tab and copy button to generator
+- Includes `<style>` block with responsive rules for iPhone
+- Open in Safari on iPhone to test copy-paste install flow
 
-### Phase 4 — Real Device Testing
-- Test Phase 2 prototype by pasting into Gmail Settings.
-- Test Phase 3 prototype by pasting into iPhone Mail Settings.
-- Resolve all rendering issues before building the generator.
+### Phase 3 — Real Device Testing
+- Test Gmail generator by pasting output into Gmail Settings
+- Test Apple Mail output by pasting into iPhone Mail Settings
+- Resolve all rendering issues
 
-### Phase 5 — Build Generator UI
-- Create `index.html` — the generator.
-- Form with all required/optional fields.
-- Live preview panel.
-- Two output tabs: Gmail / Apple Mail.
-- Copy buttons with rich text clipboard support.
-- Instructions panels.
+### Phase 4 — WordPress / Static Publishing
+- Deploy generator to the production URL (`signature.cdc.company` or similar)
+- Upload images to production HTTPS hosting
+- Update image URLs in `js/config.js`
+- Test all copy flows from the production URL
 
-### Phase 6 — Copy-to-Clipboard Testing
-- Test the copy flow on Chrome, Safari, Firefox.
-- Test the pasted result in Gmail and Apple Mail.
-- Resolve any formatting loss during copy-paste.
+### Phase 5 — Employee Instructions and Rollout
+- Write per-platform installation guides (with screenshots)
+- Gmail: 5-step guide
+- iPhone: 7-step guide with screenshots
+- Distribute to all employees
 
-### Phase 7 — WordPress / Static Publishing
-- Deploy generator to the production URL (`signature.cdc.company` or similar).
-- Upload images to production HTTPS hosting.
-- Update image URLs in the generator config.
-- Test all copy flows from the production URL.
-
-### Phase 8 — Employee Instructions and Rollout
-- Write per-platform installation guides (with screenshots).
-- Gmail: 5-step guide.
-- iPhone: 7-step guide with screenshots.
-- Mac: 4-step guide.
-- Distribute to all employees.
-
-### Phase 9 — Centralized Deployment Research (Future)
-- Evaluate Google Workspace API / GAM approach.
-- Pilot with 5 users.
-- If successful, plan company-wide rollout.
+### Phase 6 — Centralized Deployment Research (Future)
+- Evaluate Google Workspace API / GAM approach
+- Pilot with 5 users
+- If successful, plan company-wide rollout
 
 ---
 
@@ -1090,7 +1113,7 @@ Yes. Google Workspace supports centralized email signature management via:
 | Award block becomes outdated (says "2025") | Medium | Place award year in the config so it can be updated without rebuilding. |
 | Dark mode breaks white background | Medium | Force `bgcolor="ffffff"` HTML attribute AND `background-color: #ffffff` inline CSS on all table cells. |
 | Long names or titles overflow table cells | Medium | Add `word-break: break-word` and `overflow-wrap: break-word` to identity cell. Test with extreme values. |
-| Gmail mobile layout feels small | Medium/Low | Accept as known limitation. Two-column at 60% zoom is the cost of 600px design. An optional mobile-specific stacking output is a Phase 2+ enhancement. |
+| Gmail mobile layout feels small | Medium/Low | Accept as known limitation. Two-column at ~65% zoom is the cost of 580px design. An optional mobile-specific stacking output is a Phase 2+ enhancement. |
 | WordPress CSS breaks generator form | Low | Use iframe embed. Do not embed generator HTML inline inside WordPress pages. |
 | Gmail 10,000-character limit | Low | Monitor generated HTML character count. Reference design with disclaimer is approx 3,500–5,000 chars — within limit. |
 | Custom fonts in email | Non-issue | Do not use. Email-safe stack resolves this entirely. |
@@ -1123,7 +1146,7 @@ Yes. Google Workspace supports centralized email signature management via:
 | 3 | Has legal confirmed that FT/Statista logos can be used in every employee email signature? | High | Legal |
 | 4 | What is the final approved legal disclaimer text? | High | Legal |
 | 5 | Where will images be hosted in production? (subdomain, CDN, WordPress) | High | IT / web team |
-| 6 | What Google Workspace tier is the company on? (relevant for Phase 9) | Medium | IT |
+| 6 | What Google Workspace tier is the company on? (relevant for Phase 6 centralized deployment) | Medium | IT |
 | 7 | Do employees use iPhone native Mail for work email, or Gmail app only? | Medium | IT / HR |
 | 8 | Are there corporate font files available, and do they have a web-use license? | Medium | Marketing / brand team |
 | 9 | Should the award block be toggleable by individual employees, or IT-only? | Medium | Management / IT |
@@ -1178,7 +1201,7 @@ The standard corporate disclaimer used in all CDC email signatures is:
 
 > This email and any files transmitted with it may contain information that is proprietary and confidential to CDC Cableway Development Company and its affiliates and is intended solely for the use of the individual or entity to whom it is addressed. If you have received this email in error, please return it to the sender by replying to it, then permanently delete it from your system. Any disclosure, use, copying, or distribution of the information contained in this email by anyone other than the named addressee is strictly prohibited. Any views or opinions expressed in this email are solely those of the author and do not necessarily represent those of CDC Cableway Development Company and its affiliates. No employee, contractor, or agent is authorized to conclude any binding agreement on behalf of CDC Cableway Development Company and its affiliates by email.
 
-This text is the current corporate standard and is used verbatim in `Prototypes/gmail-signature.html`.
+This text is the current corporate standard. It is embedded in `Prototypes/gmail-signature-tilda-assets.html` (approved baseline).
 
 **Production status:** The default disclaimer is not considered finally production-approved until Legal / Management provides written confirmation.
 
@@ -1229,15 +1252,16 @@ for this purpose only.
 |---|---|---|
 | `logo-cdc-badge.png` | `Assets/logo-cdc-badge.png` (copy) | `…/public/signature-assets/logo-cdc-badge.png` |
 | `award-banner.png` | `Assets/award-banner.png` (copy) | `…/public/signature-assets/award-banner.png` |
-| `icon-phone.png` | Exported from `Assets/icon-phone.svg` at 56×56 px | `…/public/signature-assets/icon-phone.png` |
-| `icon-email.png` | Exported from `Assets/icon-email.svg` at 56×56 px | `…/public/signature-assets/icon-email.png` |
-| `icon-web.png` | Exported from `Assets/icon-web.svg` at 56×56 px | `…/public/signature-assets/icon-web.png` |
+| `icon-phone.png` | Exported from `Assets/icon-phone.svg` at 48×48 px | `…/public/signature-assets/icon-phone.png` |
+| `icon-email.png` | Exported from `Assets/icon-email.svg` at 48×48 px | `…/public/signature-assets/icon-email.png` |
+| `icon-web.png` | Exported from `Assets/icon-web.svg` at 48×48 px | `…/public/signature-assets/icon-web.png` |
 
 ### 24.4 Prototype Files
 
 | File | Purpose | Status |
 |---|---|---|
-| `Prototypes/gmail-signature-github-pages-balanced-compact-logo-v3.html` | **Current approved Gmail candidate** — 580 px · logo 104 px · award 184 px · floating divider · Anna Semenova | ✅ Approved |
+| `Prototypes/gmail-signature-tilda-assets.html` | **Approved Gmail template baseline** — 580 px · Tilda-hosted image URLs · use for generator template | ✅ Approved |
+| `Prototypes/gmail-signature-github-pages-balanced-compact-logo-v3.html` | **Reference design baseline** — same layout with GitHub Pages URLs | ✅ Reference |
 | `Prototypes/gmail-signature-long-name-stress-test.html` | **Long-name validation** — 6 name/title combinations tested against v3 layout | ✅ Kept for QA |
 | `public/index.html` | Asset verification page — confirms all public images load correctly | Unchanged |
 
@@ -1255,22 +1279,27 @@ They remain available in git history if needed.
 ### 24.5 Icon PNG Export Notes
 
 - Source: v1 outline SVG icons (`Assets/icon-phone.svg`, `icon-email.svg`, `icon-web.svg`)
-- Exported using `@resvg/resvg-js` at 56×56 px with transparent background
-- Displayed in signature at 30×30 px (scaled by `<img width="30" height="30">`)
+- Export at 48×48 px with transparent background (2x retina for 24×24 px display size)
+- Displayed in signature at 24×24 px (scaled by `<img width="24" height="24">`)
 - SVG originals remain the master/source format in `Assets/`
 - Do not modify the exported PNGs directly — re-export from SVG if changes are needed
 
-### 24.6 Tilda Temporary Hosting (Next Testing Phase)
+### 24.6 Tilda Temporary Hosting (Current Active Testing)
 
-As an intermediate step between GitHub Pages and final company-controlled hosting,
-image assets will be uploaded to Tilda's asset hosting for Gmail testing.
+Image assets have been uploaded to Tilda's CDN as an intermediate step between
+GitHub Pages and final company-controlled hosting.
 
 | Property | Value |
 |---|---|
+| Status | **Active** — assets uploaded and URLs embedded in approved prototype |
 | Purpose | Real Gmail deliverability test before committing to permanent production hosting |
 | Scope | Temporary only — same constraints as GitHub Pages (not company-controlled) |
-| Files to upload | `logo-cdc-badge.png`, `award-banner.png`, `icon-phone.png`, `icon-email.png`, `icon-web.png` |
-| Action required | Update `<img src>` URLs in v3 prototype to point to Tilda HTTPS URLs |
+| Prototype | `Prototypes/gmail-signature-tilda-assets.html` — approved baseline using these URLs |
+| Tilda logo URL | `https://static.tildacdn.com/tild6633-3962-4537-b532-383239613561/logo-cdc-badge.png` |
+| Tilda award URL | `https://static.tildacdn.com/tild3065-3964-4339-b466-326436663935/award-banner.png` |
+| Tilda phone URL | `https://static.tildacdn.com/tild3830-6235-4634-b839-666338353131/icon-phone.png` |
+| Tilda email URL | `https://static.tildacdn.com/tild6464-6630-4135-a161-363032613664/icon-email.png` |
+| Tilda web URL | `https://static.tildacdn.com/tild3433-6265-4665-b766-326237343934/icon-web.png` |
 | Cleanup | Remove Tilda URLs and switch to production hosting when company server is ready |
 | Production hosting | Must still be company-controlled HTTPS (e.g., `https://assets.cdc.company/signature/`) |
 
@@ -1288,7 +1317,7 @@ When moving from GitHub Pages to production hosting:
 
 ---
 
-*End of document — Version 1.7 — 2026-05-15*
+*End of document — Version 1.8 — 2026-05-15*
 *v1.1 changes: Added confirmed CDC logo assets (logo-cdc-badge.png as main, logo-cdc-wordmark.png as backup); resolved open question #2; updated folder structure, asset table, Phase 1 checklist, and color analysis section references.*
 *v1.2 changes: Added Section 22 — Icon System Decision; documented v1 approval and v2/v3 rejection rationale.*
 *v1.3 changes: Cleaned up all stale icon references throughout the document (Sections 2, 4, 5, 6.3, 7.2, 7.4, 19); updated icon status to reflect v1 SVGs approved and PNG export as production-only step; removed reference to v2/v3 files (deleted); corrected icon style spec in Section 7.2 from solid-circle to v1 outline.*
@@ -1296,3 +1325,4 @@ When moving from GitHub Pages to production hosting:
 *v1.5 changes: Added Section 23 — Disclaimer Strategy; documented default disclaimer text, generator UI disclaimer field behaviour (collapsed by default, advanced/exception field, reset control, legal warning), and production-approval status.*
 *v1.6 changes: Added Section 24 — Temporary GitHub Pages Image Hosting; documented public asset structure, GitHub Pages setup, PNG export notes, prototype file roles, and production hosting checklist.*
 *v1.7 changes: Updated Section 24.4 — approved Gmail candidate is now Prototypes/gmail-signature-github-pages-balanced-compact-logo-v3.html; long-name validation file kept as Prototypes/gmail-signature-long-name-stress-test.html; 6 obsolete prototype variants removed from working tree (preserved in git history); added Section 24.6 — Tilda temporary hosting plan as intermediate step before company-controlled production hosting.*
+*v1.8 changes: Synchronized with Docs/generator-implementation-plan.md (v1.0). Header updated to v1.8, status to "Pre-implementation — ready for Phase 1 Gmail generator build". Added source-of-truth note pointing to implementation plan. Section 2 row 7 Phase 9→Phase 6. Section 3.3 risk table 600px→580px. Section 4 folder structure updated to reflect current Prototypes/ files and planned Phase 1 js/css structure. Section 5 icon PNG export 56×56→48×48px. Section 6.1 logo display size 80→104px. Section 6.2 award display size 220→184px. Section 6.3 icon display size 28→24px, PNG export 56→48px. Section 7.1 removed "solid disc" contradiction — v1 outline style is approved; "reads at 28px"→24px. Section 7.2 display size 28→24px. Section 7.4 Step 2 export 56×56→48×48px. Section 7.6 test size 28×28→24×24px. Section 9.4 phase references updated to Phase 0/Phase 1. Section 10.1 pseudocode widths: table 600→580px, logo col 90→104, spacer 20→18, identity 240→259, award 220→184, icons 28→24; company name comment CDC prefix removed; disclaimer color noted. Section 10.2 typography revised: name 25→21px, title/company/contact 15/15/14→13/13/13px, disclaimer 11→10px/#666666/lh 1.45. Section 10.3 widths revised: total 640→580px, logo 96→104px, spacer 24→18px, identity 258→259px, sep-to-award 21→14px, award 240→184px, icons 30→24px; added column math. Section 10.4 spacing simplified — source of truth is approved prototype. Section 11 Apple Mail marked Phase 2 only. Section 12 generator fields replaced: removed Department/Mobile2/Email2, fixed company lock value to "Cableway Development Company", aligned with implementation plan Phase 1 field list. Section 14.1 award img width 220→184. Section 15.3 base64 size reference 56×56→48×48px. Section 17.4 Phase 9→Phase 6. Section 19 phases rewritten: Phase 0 (complete), Phase 1 (current build), Phases 2–6 updated. Section 20 risk "600px"→"580px". Section 21 q6 Phase 9→Phase 6. Section 23.1 removed reference to deleted gmail-signature.html — replaced with tilda-assets.html. Section 24.3 icon export 56×56→48×48 px. Section 24.4 Tilda file as approved baseline, v3 as reference. Section 24.5 export 56×56→48×48px, display 30×30→24×24px. Section 24.6 updated to reflect Tilda as current active (assets already uploaded, URLs recorded).*

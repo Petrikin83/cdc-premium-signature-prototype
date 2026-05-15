@@ -1235,11 +1235,22 @@ for this purpose only.
 
 ### 24.4 Prototype Files
 
-| File | Purpose |
-|---|---|
-| `Prototypes/gmail-signature.html` | Authoritative browser baseline — uses relative `../Assets/` paths |
-| `Prototypes/gmail-signature-github-pages-test.html` | Gmail testing version — uses GitHub Pages HTTPS image URLs |
-| `public/index.html` | Asset verification page — confirms all public images load correctly |
+| File | Purpose | Status |
+|---|---|---|
+| `Prototypes/gmail-signature-github-pages-balanced-compact-logo-v3.html` | **Current approved Gmail candidate** — 580 px · logo 104 px · award 184 px · floating divider · Anna Semenova | ✅ Approved |
+| `Prototypes/gmail-signature-long-name-stress-test.html` | **Long-name validation** — 6 name/title combinations tested against v3 layout | ✅ Kept for QA |
+| `public/index.html` | Asset verification page — confirms all public images load correctly | Unchanged |
+
+**Note — obsolete variants removed 2026-05-15:**
+The following visual prototype variants were removed from the working tree after approval of v3.
+They remain available in git history if needed.
+
+- `Prototypes/gmail-signature.html` (original browser baseline)
+- `Prototypes/gmail-signature-github-pages-test.html` (640 px full-size test)
+- `Prototypes/gmail-signature-github-pages-compact.html` (600 px compact)
+- `Prototypes/gmail-signature-github-pages-optimized-compact.html` (560 px)
+- `Prototypes/gmail-signature-github-pages-balanced-compact-logo.html` (v1, 580 px, logo 90 px)
+- `Prototypes/gmail-signature-github-pages-balanced-compact-logo-v2.html` (v2, 580 px, logo 104 px, full-height separator)
 
 ### 24.5 Icon PNG Export Notes
 
@@ -1249,7 +1260,23 @@ for this purpose only.
 - SVG originals remain the master/source format in `Assets/`
 - Do not modify the exported PNGs directly — re-export from SVG if changes are needed
 
-### 24.6 Production Hosting Checklist (Future)
+### 24.6 Tilda Temporary Hosting (Next Testing Phase)
+
+As an intermediate step between GitHub Pages and final company-controlled hosting,
+image assets will be uploaded to Tilda's asset hosting for Gmail testing.
+
+| Property | Value |
+|---|---|
+| Purpose | Real Gmail deliverability test before committing to permanent production hosting |
+| Scope | Temporary only — same constraints as GitHub Pages (not company-controlled) |
+| Files to upload | `logo-cdc-badge.png`, `award-banner.png`, `icon-phone.png`, `icon-email.png`, `icon-web.png` |
+| Action required | Update `<img src>` URLs in v3 prototype to point to Tilda HTTPS URLs |
+| Cleanup | Remove Tilda URLs and switch to production hosting when company server is ready |
+| Production hosting | Must still be company-controlled HTTPS (e.g., `https://assets.cdc.company/signature/`) |
+
+---
+
+### 24.7 Production Hosting Checklist (Future)
 
 When moving from GitHub Pages to production hosting:
 
@@ -1261,10 +1288,11 @@ When moving from GitHub Pages to production hosting:
 
 ---
 
-*End of document — Version 1.6 — 2026-05-15*
+*End of document — Version 1.7 — 2026-05-15*
 *v1.1 changes: Added confirmed CDC logo assets (logo-cdc-badge.png as main, logo-cdc-wordmark.png as backup); resolved open question #2; updated folder structure, asset table, Phase 1 checklist, and color analysis section references.*
 *v1.2 changes: Added Section 22 — Icon System Decision; documented v1 approval and v2/v3 rejection rationale.*
 *v1.3 changes: Cleaned up all stale icon references throughout the document (Sections 2, 4, 5, 6.3, 7.2, 7.4, 19); updated icon status to reflect v1 SVGs approved and PNG export as production-only step; removed reference to v2/v3 files (deleted); corrected icon style spec in Section 7.2 from solid-circle to v1 outline.*
 *v1.4 changes: Recorded company name display decision (Section 2 rows 5/5a) — visible identity block uses "Cableway Development Company", legal disclaimer uses full "CDC Cableway Development Company and its affiliates"; updated Section 10.2 typography to Phase 2 prototype values (name 25px, title 15px, company 15px, contact 14px, disclaimer 11px/1.5lh); updated Section 10.3 widths to 640px layout; updated Section 10.4 spacing.*
 *v1.5 changes: Added Section 23 — Disclaimer Strategy; documented default disclaimer text, generator UI disclaimer field behaviour (collapsed by default, advanced/exception field, reset control, legal warning), and production-approval status.*
 *v1.6 changes: Added Section 24 — Temporary GitHub Pages Image Hosting; documented public asset structure, GitHub Pages setup, PNG export notes, prototype file roles, and production hosting checklist.*
+*v1.7 changes: Updated Section 24.4 — approved Gmail candidate is now Prototypes/gmail-signature-github-pages-balanced-compact-logo-v3.html; long-name validation file kept as Prototypes/gmail-signature-long-name-stress-test.html; 6 obsolete prototype variants removed from working tree (preserved in git history); added Section 24.6 — Tilda temporary hosting plan as intermediate step before company-controlled production hosting.*

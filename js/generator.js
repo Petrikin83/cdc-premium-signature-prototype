@@ -38,6 +38,8 @@
   const fallbackHtml     = $('fallback-html');
 
   let currentSignatureHtml = '';
+  const touched = new Set(); // required fields the user has blurred
+  let validateAll = false;   // true after copy is clicked
 
   // ── Init ───────────────────────────────────────────────────────────────────
   function init() {
@@ -53,6 +55,13 @@
     disclaimerToggle.addEventListener('click', toggleDisclaimer);
     disclaimerReset.addEventListener('click', resetDisclaimer);
     addressToggle.addEventListener('click', toggleAddress);
+
+    // Blur listeners — mark field touched so its error becomes visible
+    Object.keys(errorEls).forEach(key => {
+      if (fields[key]) {
+        fields[key].addEventListener('blur', () => { touched.add(key); render(); });
+      }
+    });
 
     render();
   }
@@ -99,9 +108,10 @@
     const addrRes = CDC_VALIDATION.validateAddress(fields.officeAddr.value);
     if (addressWarning) addressWarning.textContent = addrRes.warning || '';
 
-    // Update field errors
+    // Update field errors — only for touched fields or after copy is attempted
     Object.keys(errorEls).forEach(key => {
-      if (errorEls[key]) errorEls[key].textContent = errs[key] || '';
+      if (!errorEls[key]) return;
+      errorEls[key].textContent = (validateAll || touched.has(key)) ? (errs[key] || '') : '';
     });
 
     // Build template data — use safe fallbacks so preview always renders
@@ -163,6 +173,8 @@
 
   // ── Copy ───────────────────────────────────────────────────────────────────
   async function copySignature() {
+    validateAll = true;
+    render(); // surface all field errors before copying
     if (!currentSignatureHtml) return;
     try {
       await copyModern(currentSignatureHtml);
@@ -229,6 +241,9 @@
 
     collapseSection(addressSection, addressToggle);
     collapseSection(disclaimerSection, disclaimerToggle);
+
+    touched.clear();
+    validateAll = false;
 
     Object.values(errorEls).forEach(el => { if (el) el.textContent = ''; });
     if (addressWarning) addressWarning.textContent = '';

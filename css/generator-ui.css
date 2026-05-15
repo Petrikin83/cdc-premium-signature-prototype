@@ -270,7 +270,7 @@ body {
   margin-bottom: 4px;
 }
 
-/* ── Preview chrome — constrained to signature width + padding ── */
+/* ── Preview chrome — 620px iframe + 40px padding + 2px border = 662px exact fit ── */
 #preview-chrome {
   background: var(--white);
   border: 1px solid var(--border);
@@ -278,7 +278,7 @@ body {
   padding: 20px;
   box-shadow: var(--shadow);
   overflow-x: auto;
-  max-width: 660px;
+  max-width: 662px;
 }
 
 #preview-frame {

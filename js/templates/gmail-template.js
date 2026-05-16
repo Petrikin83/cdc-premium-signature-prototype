@@ -161,6 +161,20 @@ function buildGmailSignature(data) {
       </table>
     </td>
   </tr>
+
+  <!-- Corporate address row -->
+  <tr>
+    <td colspan="6" bgcolor="#ffffff"
+        style="background-color: #ffffff; padding: 2px 0 8px 0; vertical-align: middle;">
+      <img src="${CDC_CONFIG.assets.location}"
+           width="24" height="24" alt="Location"
+           style="display: inline-block; vertical-align: middle; border: 0;"><span
+        style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;
+               font-weight: 400; color: #555555; vertical-align: middle;
+               margin-left: 6px; display: inline-block; white-space: nowrap;"
+      >${_esc(CDC_CONFIG.brand.corporateAddress)}</span>
+    </td>
+  </tr>
 ${addressRow}
   <!-- Horizontal divider -->
   <tr>

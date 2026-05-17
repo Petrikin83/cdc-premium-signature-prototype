@@ -33,7 +33,7 @@ body {
 #page-header {
   background: var(--dark);
   color: #fff;
-  padding: 20px 32px;
+  padding: 12px 32px;
   border-bottom: 3px solid var(--orange);
 }
 
@@ -53,10 +53,10 @@ body {
 #main-layout {
   display: flex;
   align-items: flex-start;
-  gap: 28px;
+  gap: 24px;
   max-width: 1300px;
   margin: 0 auto;
-  padding: 28px 32px;
+  padding: 20px 32px;
 }
 
 /* ── Form panel ── */
@@ -65,7 +65,7 @@ body {
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 24px 22px;
+  padding: 18px 20px;
   box-shadow: var(--shadow);
 }
 
@@ -75,14 +75,14 @@ body {
   text-transform: uppercase;
   letter-spacing: .06em;
   color: var(--text-muted);
-  margin-bottom: 18px;
-  padding-bottom: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
   border-bottom: 1px solid #eee;
 }
 
 /* ── Field groups ── */
 .field-group {
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .field-group label {
@@ -254,7 +254,7 @@ body {
   text-transform: uppercase;
   letter-spacing: .06em;
   color: var(--text-muted);
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
 /* ── Warnings ── */
@@ -275,7 +275,7 @@ body {
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 20px;
+  padding: 14px 20px;
   box-shadow: var(--shadow);
   overflow-x: auto;
   max-width: 662px;
@@ -290,7 +290,7 @@ body {
 
 /* ── Action buttons ── */
 #action-buttons {
-  margin-top: 14px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -337,12 +337,12 @@ body {
 
 /* ── Apple Mail hint ── */
 #apple-hint {
-  margin-top: 12px;
+  margin-top: 10px;
   max-width: 660px;
   background: var(--warn-bg);
   border: 1px solid var(--warn-border);
   border-radius: var(--radius);
-  padding: 12px 14px;
+  padding: 10px 14px;
 }
 
 .apple-hint-title {
@@ -400,12 +400,13 @@ body {
 @media (max-width: 1100px) {
   #main-layout { flex-direction: column; }
   #form-panel  { flex: none; width: 100%; max-width: 680px; }
-  #action-buttons, #copy-fallback { max-width: 660px; }
+  #preview-panel { width: 100%; }
+  #preview-chrome, #action-buttons, #apple-hint, #copy-fallback { max-width: 662px; }
 }
 
 @media (max-width: 720px) {
-  #main-layout  { padding: 16px; gap: 16px; }
-  #page-header  { padding: 16px 20px; }
-  #form-panel   { padding: 18px 16px; }
-  #preview-chrome { padding: 14px; }
+  #main-layout    { padding: 12px 16px; gap: 14px; }
+  #page-header    { padding: 10px 16px; }
+  #form-panel     { padding: 16px 14px; }
+  #preview-chrome { padding: 10px 14px; }
 }

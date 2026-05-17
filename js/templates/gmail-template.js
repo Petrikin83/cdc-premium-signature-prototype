@@ -99,17 +99,16 @@ function buildGmailSignature(data) {
         style="height: 1px; background-color: #e0e0e0; font-size: 1px; line-height: 1px;"></td>
   </tr>
 
-  <!-- Contact row -->
+  <!-- Contact grid B2: 2×2, no divider -->
   <tr>
     <td colspan="6" bgcolor="#ffffff"
         style="background-color: #ffffff; padding: 10px 0;">
       <table width="100%" cellpadding="0" cellspacing="0" border="0"
              style="border-collapse: collapse;">
+        <!-- Row 1: phone | email -->
         <tr>
-
-          <!-- Phone -->
           <td valign="middle"
-              style="padding: 0 15px 0 0; vertical-align: middle; white-space: nowrap;">
+              style="padding: 0 32px 8px 0; vertical-align: middle; white-space: nowrap;">
             <img src="${CDC_CONFIG.assets.phone}"
                  width="24" height="24" alt="Phone"
                  style="display: inline-block; vertical-align: middle; border: 0;"><a
@@ -120,14 +119,8 @@ function buildGmailSignature(data) {
                      white-space: nowrap;"
             >${_phoneDisplay(phone)}</a>
           </td>
-
-          <!-- Pipe -->
-          <td width="1" bgcolor="#d0d0d0"
-              style="background-color: #d0d0d0; font-size: 0; line-height: 0; padding: 0;"></td>
-
-          <!-- Email -->
           <td valign="middle"
-              style="padding: 0 15px; vertical-align: middle; white-space: nowrap;">
+              style="padding: 0 0 8px 0; vertical-align: middle; white-space: nowrap;">
             <img src="${CDC_CONFIG.assets.email}"
                  width="24" height="24" alt="Email"
                  style="display: inline-block; vertical-align: middle; border: 0;"><a
@@ -138,14 +131,21 @@ function buildGmailSignature(data) {
                      white-space: nowrap;"
             >${_esc(email)}</a>
           </td>
-
-          <!-- Pipe -->
-          <td width="1" bgcolor="#d0d0d0"
-              style="background-color: #d0d0d0; font-size: 0; line-height: 0; padding: 0;"></td>
-
-          <!-- Website -->
+        </tr>
+        <!-- Row 2: corporate address | website -->
+        <tr>
           <td valign="middle"
-              style="padding: 0 0 0 15px; vertical-align: middle; white-space: nowrap;">
+              style="padding: 0 32px 0 0; vertical-align: middle; white-space: nowrap;">
+            <img src="${CDC_CONFIG.assets.location}"
+                 width="24" height="24" alt="Location"
+                 style="display: inline-block; vertical-align: middle; border: 0;"><span
+              style="font-family: Arial, Helvetica, sans-serif; font-size: 13px;
+                     font-weight: 400; color: #555555; vertical-align: middle;
+                     margin-left: 6px; display: inline-block; white-space: nowrap;"
+            >${_esc(CDC_CONFIG.brand.corporateAddress)}</span>
+          </td>
+          <td valign="middle"
+              style="padding: 0; vertical-align: middle; white-space: nowrap;">
             <img src="${CDC_CONFIG.assets.web}"
                  width="24" height="24" alt="Website"
                  style="display: inline-block; vertical-align: middle; border: 0;"><a
@@ -156,23 +156,8 @@ function buildGmailSignature(data) {
                      white-space: nowrap;"
             >${_esc(websiteDisplay)}</a>
           </td>
-
         </tr>
       </table>
-    </td>
-  </tr>
-
-  <!-- Corporate address row -->
-  <tr>
-    <td colspan="6" bgcolor="#ffffff"
-        style="background-color: #ffffff; padding: 2px 0 8px 0; vertical-align: middle;">
-      <img src="${CDC_CONFIG.assets.location}"
-           width="24" height="24" alt="Location"
-           style="display: inline-block; vertical-align: middle; border: 0;"><span
-        style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;
-               font-weight: 400; color: #555555; vertical-align: middle;
-               margin-left: 6px; display: inline-block; white-space: nowrap;"
-      >${_esc(CDC_CONFIG.brand.corporateAddress)}</span>
     </td>
   </tr>
 ${addressRow}

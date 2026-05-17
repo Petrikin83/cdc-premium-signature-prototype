@@ -124,7 +124,7 @@
       jobTitle:       titleText,
       phone:          phoneRes.valid ? phoneRes.value : (fields.phone.value.trim() || '+971 50 000 00 00'),
       email:          emailRes.valid ? emailRes.value : (fields.email.value.trim() || 'name@cdc.company'),
-      officeAddress:  addrRes.value,
+      resolvedAddress: addrRes.value || CDC_CONFIG.brand.corporateAddress,
       disclaimerText: fields.disclaimer.value.trim() || CDC_CONFIG.disclaimer.default,
       nameFontSize:   nameSizing.size,
       titleFontSize:  titleSizing.size,

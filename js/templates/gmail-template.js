@@ -14,22 +14,12 @@ function _phoneDisplay(phone) {
 function buildGmailSignature(data) {
   const {
     firstName, lastName, jobTitle, phone, email,
-    officeAddress, disclaimerText,
+    resolvedAddress, disclaimerText,
     nameFontSize, titleFontSize,
     telHref, websiteDisplay, websiteHref,
   } = data;
 
   const fullName = `${firstName} ${lastName}`;
-
-  const addressRow = officeAddress ? `
-      <tr>
-        <td colspan="6" bgcolor="#ffffff"
-            style="background-color: #ffffff; padding: 6px 0 10px 0;">
-          <span style="font-family: Arial, Helvetica, sans-serif; font-size: 10.5px;
-                       font-weight: 600; color: #555555; line-height: 1.35;">Office:</span><span style="font-family: Arial, Helvetica, sans-serif; font-size: 10.5px;
-                       font-weight: 400; color: #666666; line-height: 1.35;"> ${_esc(officeAddress)}</span>
-        </td>
-      </tr>` : '';
 
   return `<table width="580" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff"
        style="border-collapse: collapse; table-layout: fixed; background-color: #ffffff;">
@@ -142,7 +132,7 @@ function buildGmailSignature(data) {
               style="font-family: Arial, Helvetica, sans-serif; font-size: 13px;
                      font-weight: 400; color: #555555; vertical-align: middle;
                      margin-left: 6px; display: inline-block; white-space: nowrap;"
-            >${_esc(CDC_CONFIG.brand.corporateAddress)}</span>
+            >${_esc(resolvedAddress)}</span>
           </td>
           <td valign="middle"
               style="padding: 0; vertical-align: middle; white-space: nowrap;">
@@ -160,7 +150,7 @@ function buildGmailSignature(data) {
       </table>
     </td>
   </tr>
-${addressRow}
+
   <!-- Horizontal divider -->
   <tr>
     <td colspan="6" height="1" bgcolor="#e0e0e0"

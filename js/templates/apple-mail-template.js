@@ -27,7 +27,7 @@ function buildAppleMailSignature(data) {
     <td width="184" bgcolor="#ffffff" style="background-color: #ffffff; padding: 0; font-size: 0; line-height: 0;"></td>
   </tr>
 
-  <!-- Header: logo 104 | spacer 18 | identity spans cols 3–6 = 458 px — no award, no separator -->
+  <!-- Header: logo 104 | spacer 18 | identity 259 | empty 1 | spacer 14 | anchor 184 — no award -->
   <tr>
 
     <!-- CDC badge logo — 104 px -->
@@ -42,8 +42,8 @@ function buildAppleMailSignature(data) {
     <!-- Spacer — 18 px -->
     <td width="18" bgcolor="#ffffff" style="background-color: #ffffff;"></td>
 
-    <!-- Identity: Name · Title · Company — spans cols 3–6 = 458 px -->
-    <td colspan="4" valign="middle" bgcolor="#ffffff"
+    <!-- Identity: Name · Title · Company — 259 px -->
+    <td width="259" valign="middle" bgcolor="#ffffff"
         style="background-color: #ffffff; padding: 14px 0 14px 0; vertical-align: middle;">
       <p style="font-family: Arial, Helvetica, sans-serif; font-size: ${nameFontSize + 1}px;
                 font-weight: 700; color: #1a1a2e; line-height: 1.15; margin: 0 0 5px 0;
@@ -61,6 +61,18 @@ function buildAppleMailSignature(data) {
         ${_esc(CDC_CONFIG.brand.companyDisplay)}
       </p>
     </td>
+
+    <!-- Empty white cell — col 4 — 1 px width anchor, no separator -->
+    <td width="1" bgcolor="#ffffff"
+        style="background-color: #ffffff; padding: 0; font-size: 0; line-height: 0;"></td>
+
+    <!-- Empty white spacer — col 5 — 14 px -->
+    <td width="14" bgcolor="#ffffff"
+        style="background-color: #ffffff; padding: 0; font-size: 0; line-height: 0;"></td>
+
+    <!-- Empty white anchor cell — col 6 — 184 px width anchor, no award -->
+    <td width="184" bgcolor="#ffffff"
+        style="background-color: #ffffff; padding: 0; font-size: 0; line-height: 0;"></td>
 
   </tr>
 

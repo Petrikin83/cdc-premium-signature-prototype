@@ -93,7 +93,7 @@ function buildAppleMailSignature(data) {
         <tr>
           <td width="290" valign="middle" bgcolor="#ffffff"
               style="background-color: #ffffff; padding: 0 32px 8px 0; vertical-align: middle; white-space: nowrap;">
-            <img src="${CDC_CONFIG.assets.phone}"
+            <nobr><img src="${CDC_CONFIG.assets.phone}"
                  width="24" height="24" alt="Phone"
                  style="display: inline-block; vertical-align: middle; border: 0;"><a
               href="${_esc(telHref)}"
@@ -101,11 +101,11 @@ function buildAppleMailSignature(data) {
                      font-weight: 400; color: #333333 !important; text-decoration: none;
                      vertical-align: middle; margin-left: 6px; display: inline-block;
                      white-space: nowrap; background-color: #ffffff;"
-            >${_phoneDisplay(phone)}</a>
+            >${_phoneDisplay(phone)}</a></nobr>
           </td>
           <td width="290" valign="middle" bgcolor="#ffffff"
               style="background-color: #ffffff; padding: 0 0 8px 0; vertical-align: middle; white-space: nowrap;">
-            <img src="${CDC_CONFIG.assets.email}"
+            <nobr><img src="${CDC_CONFIG.assets.email}"
                  width="24" height="24" alt="Email"
                  style="display: inline-block; vertical-align: middle; border: 0;"><a
               href="mailto:${_esc(email)}"
@@ -113,25 +113,25 @@ function buildAppleMailSignature(data) {
                      font-weight: 400; color: #333333 !important; text-decoration: none;
                      vertical-align: middle; margin-left: 6px; display: inline-block;
                      white-space: nowrap; background-color: #ffffff;"
-            >${_esc(email)}</a>
+            >${_esc(email)}</a></nobr>
           </td>
         </tr>
         <!-- Row 2: corporate address | website -->
         <tr>
           <td width="290" valign="middle" bgcolor="#ffffff"
               style="background-color: #ffffff; padding: 0 32px 0 0; vertical-align: middle; white-space: nowrap;">
-            <img src="${CDC_CONFIG.assets.location}"
+            <nobr><img src="${CDC_CONFIG.assets.location}"
                  width="24" height="24" alt="Location"
                  style="display: inline-block; vertical-align: middle; border: 0;"><span
               style="font-family: Arial, Helvetica, sans-serif; font-size: 13px;
                      font-weight: 400; color: #555555; vertical-align: middle;
                      margin-left: 6px; display: inline-block; white-space: nowrap;
                      background-color: #ffffff;"
-            >${_esc(resolvedAddress)}</span>
+            >${_esc(resolvedAddress).replace(/ /g, '&nbsp;')}</span></nobr>
           </td>
           <td width="290" valign="middle" bgcolor="#ffffff"
               style="background-color: #ffffff; padding: 0; vertical-align: middle; white-space: nowrap;">
-            <img src="${CDC_CONFIG.assets.web}"
+            <nobr><img src="${CDC_CONFIG.assets.web}"
                  width="24" height="24" alt="Website"
                  style="display: inline-block; vertical-align: middle; border: 0;"><a
               href="${_esc(websiteHref)}"
@@ -139,7 +139,7 @@ function buildAppleMailSignature(data) {
                      font-weight: 400; color: #333333 !important; text-decoration: none;
                      vertical-align: middle; margin-left: 6px; display: inline-block;
                      white-space: nowrap; background-color: #ffffff;"
-            >${_esc(websiteDisplay)}</a>
+            >${_esc(websiteDisplay)}</a></nobr>
           </td>
         </tr>
       </table>

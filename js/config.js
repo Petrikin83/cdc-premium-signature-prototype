@@ -12,7 +12,7 @@ const CDC_CONFIG = {
     companyLegal:     'CDC Cableway Development Company and its affiliates',
     orange:           '#F16623',
     websiteDefault:   'cdc.company',
-    corporateAddress: '39040 NEUSTATT 6, ALDEIN (BZ), ITALY',
+    corporateAddress: '39040 Neustatt 6, Aldein (BZ), Italy',
   },
   layout: {
     totalWidth:     580,

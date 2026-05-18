@@ -15,7 +15,19 @@ function buildAppleMailSignature(data) {
 <table width="580" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff"
      style="border-collapse: collapse; table-layout: fixed; background-color: #ffffff;">
 
-  <!-- Column widths: 104 + 20 + 456 = 580 px -->
+  <!-- Column widths: 104 + 18 + 259 + 1 + 14 + 184 = 580 px -->
+
+  <!-- Grid anchor: zero-height row locks 6-column widths for mobile client stability -->
+  <tr>
+    <td width="104" bgcolor="#ffffff" style="background-color: #ffffff; padding: 0; font-size: 0; line-height: 0;"></td>
+    <td width="18"  bgcolor="#ffffff" style="background-color: #ffffff; padding: 0; font-size: 0; line-height: 0;"></td>
+    <td width="259" bgcolor="#ffffff" style="background-color: #ffffff; padding: 0; font-size: 0; line-height: 0;"></td>
+    <td width="1"   bgcolor="#ffffff" style="background-color: #ffffff; padding: 0; font-size: 0; line-height: 0;"></td>
+    <td width="14"  bgcolor="#ffffff" style="background-color: #ffffff; padding: 0; font-size: 0; line-height: 0;"></td>
+    <td width="184" bgcolor="#ffffff" style="background-color: #ffffff; padding: 0; font-size: 0; line-height: 0;"></td>
+  </tr>
+
+  <!-- Header: logo 104 | spacer 18 | identity spans cols 3–6 = 458 px — no award, no separator -->
   <tr>
 
     <!-- CDC badge logo — 104 px -->
@@ -27,11 +39,11 @@ function buildAppleMailSignature(data) {
            style="display: block; border: 0; height: auto; width: 104px;">
     </td>
 
-    <!-- Spacer — 20 px -->
-    <td width="20" bgcolor="#ffffff" style="background-color: #ffffff;"></td>
+    <!-- Spacer — 18 px -->
+    <td width="18" bgcolor="#ffffff" style="background-color: #ffffff;"></td>
 
-    <!-- Identity: Name · Title · Company — 456 px -->
-    <td width="456" valign="middle" bgcolor="#ffffff"
+    <!-- Identity: Name · Title · Company — spans cols 3–6 = 458 px -->
+    <td colspan="4" valign="middle" bgcolor="#ffffff"
         style="background-color: #ffffff; padding: 14px 0 14px 0; vertical-align: middle;">
       <p style="font-family: Arial, Helvetica, sans-serif; font-size: ${nameFontSize + 1}px;
                 font-weight: 700; color: #1a1a2e; line-height: 1.15; margin: 0 0 5px 0;
@@ -54,13 +66,13 @@ function buildAppleMailSignature(data) {
 
   <!-- Horizontal divider -->
   <tr>
-    <td colspan="3" height="1" bgcolor="#e0e0e0"
+    <td colspan="6" height="1" bgcolor="#e0e0e0"
         style="height: 1px; background-color: #e0e0e0; font-size: 1px; line-height: 1px;"></td>
   </tr>
 
   <!-- Contact grid B2: 2×2, no divider -->
   <tr>
-    <td colspan="3" bgcolor="#ffffff"
+    <td colspan="6" bgcolor="#ffffff"
         style="background-color: #ffffff; padding: 10px 0;">
       <table width="100%" cellpadding="0" cellspacing="0" border="0"
              style="border-collapse: collapse;">
@@ -123,13 +135,13 @@ function buildAppleMailSignature(data) {
 
   <!-- Horizontal divider -->
   <tr>
-    <td colspan="3" height="1" bgcolor="#e0e0e0"
+    <td colspan="6" height="1" bgcolor="#e0e0e0"
         style="height: 1px; background-color: #e0e0e0; font-size: 1px; line-height: 1px;"></td>
   </tr>
 
   <!-- Legal disclaimer -->
   <tr>
-    <td colspan="3" bgcolor="#ffffff"
+    <td colspan="6" bgcolor="#ffffff"
         style="background-color: #ffffff; padding: 9px 0 14px 0;">
       <span style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;
                    font-weight: 400; color: #666666; line-height: 1.45; display: block;

@@ -24,7 +24,7 @@ function buildGmailSignature(data) {
   return `<table width="580" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff"
        style="border-collapse: collapse; table-layout: fixed; background-color: #ffffff;">
 
-  <!-- Column widths: 104 + 18 + 259 + 1 + 14 + 184 = 580 px -->
+  <!-- Column widths: 104 + 20 + 456 = 580 px -->
   <tr>
 
     <!-- CDC badge logo — 104 px -->
@@ -36,11 +36,11 @@ function buildGmailSignature(data) {
            style="display: block; border: 0; height: auto;">
     </td>
 
-    <!-- Spacer — 18 px -->
-    <td width="18" bgcolor="#ffffff" style="background-color: #ffffff;"></td>
+    <!-- Spacer — 20 px -->
+    <td width="20" bgcolor="#ffffff" style="background-color: #ffffff;"></td>
 
-    <!-- Identity: Name · Title · Company -->
-    <td width="259" valign="middle" bgcolor="#ffffff"
+    <!-- Identity: Name · Title · Company — 456 px -->
+    <td width="456" valign="middle" bgcolor="#ffffff"
         style="background-color: #ffffff; padding: 14px 0 14px 0; vertical-align: middle;">
       <p style="font-family: Arial, Helvetica, sans-serif; font-size: ${nameFontSize}px;
                 font-weight: 700; color: #1a1a2e; line-height: 1.15; margin: 0 0 5px 0;">
@@ -56,42 +56,17 @@ function buildGmailSignature(data) {
       </p>
     </td>
 
-    <!-- Vertical separator — floating 64 px line, vertically centered -->
-    <td width="1" valign="middle" bgcolor="#ffffff"
-        style="background-color: #ffffff; padding: 0; font-size: 0; line-height: 0; vertical-align: middle;">
-      <table width="1" cellpadding="0" cellspacing="0" border="0"
-             style="border-collapse: collapse;">
-        <tr>
-          <td width="1" height="64" bgcolor="#eeeeee"
-              style="background-color: #eeeeee; font-size: 0; line-height: 0;
-                     width: 1px; height: 64px;"></td>
-        </tr>
-      </table>
-    </td>
-
-    <!-- Spacer — 14 px -->
-    <td width="14" bgcolor="#ffffff" style="background-color: #ffffff;"></td>
-
-    <!-- Award banner — 184 px -->
-    <td width="184" valign="middle" bgcolor="#ffffff"
-        style="background-color: #ffffff; padding: 14px 0 14px 0; vertical-align: middle;">
-      <img src="${CDC_CONFIG.assets.award}"
-           width="184"
-           alt="Financial Times · 1000 Europe&#39;s Fastest Growing Companies 2025 · Ranked 3rd in Europe"
-           style="display: block; border: 0; height: auto; max-width: 184px;">
-    </td>
-
   </tr>
 
   <!-- Horizontal divider -->
   <tr>
-    <td colspan="6" height="1" bgcolor="#e0e0e0"
+    <td colspan="3" height="1" bgcolor="#e0e0e0"
         style="height: 1px; background-color: #e0e0e0; font-size: 1px; line-height: 1px;"></td>
   </tr>
 
   <!-- Contact grid B2: 2×2, no divider -->
   <tr>
-    <td colspan="6" bgcolor="#ffffff"
+    <td colspan="3" bgcolor="#ffffff"
         style="background-color: #ffffff; padding: 10px 0;">
       <table width="100%" cellpadding="0" cellspacing="0" border="0"
              style="border-collapse: collapse;">
@@ -153,13 +128,13 @@ function buildGmailSignature(data) {
 
   <!-- Horizontal divider -->
   <tr>
-    <td colspan="6" height="1" bgcolor="#e0e0e0"
+    <td colspan="3" height="1" bgcolor="#e0e0e0"
         style="height: 1px; background-color: #e0e0e0; font-size: 1px; line-height: 1px;"></td>
   </tr>
 
   <!-- Legal disclaimer -->
   <tr>
-    <td colspan="6" bgcolor="#ffffff"
+    <td colspan="3" bgcolor="#ffffff"
         style="background-color: #ffffff; padding: 9px 0 14px 0;">
       <span style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;
                    font-weight: 400; color: #666666; line-height: 1.45; display: block;">

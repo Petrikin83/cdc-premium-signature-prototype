@@ -56,8 +56,8 @@ function buildAppleMailSignature(data) {
       <table width="1" cellpadding="0" cellspacing="0" border="0"
              style="border-collapse: collapse;">
         <tr>
-          <td width="1" height="64" bgcolor="#eeeeee"
-              style="background-color: #eeeeee; font-size: 0; line-height: 0;
+          <td width="1" height="64" bgcolor="#ffffff"
+              style="background-color: #ffffff; font-size: 0; line-height: 0;
                      width: 1px; height: 64px;"></td>
         </tr>
       </table>
@@ -78,15 +78,20 @@ function buildAppleMailSignature(data) {
         style="height: 1px; background-color: #e0e0e0; font-size: 1px; line-height: 1px;"></td>
   </tr>
 
-  <!-- Contact grid B2: 2×2, no divider -->
+  <!-- Contact grid B2: 2×2, self-anchored 580 px -->
   <tr>
     <td colspan="6" bgcolor="#ffffff"
         style="background-color: #ffffff; padding: 10px 0;">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0"
-             style="border-collapse: collapse;">
+      <table width="580" cellpadding="0" cellspacing="0" border="0"
+             style="border-collapse: collapse; table-layout: fixed;">
+        <!-- Column anchors: 290 + 290 = 580 -->
+        <tr>
+          <td width="290" bgcolor="#ffffff" style="background-color: #ffffff; padding: 0; font-size: 0; line-height: 0;"></td>
+          <td width="290" bgcolor="#ffffff" style="background-color: #ffffff; padding: 0; font-size: 0; line-height: 0;"></td>
+        </tr>
         <!-- Row 1: phone | email -->
         <tr>
-          <td valign="middle" bgcolor="#ffffff"
+          <td width="290" valign="middle" bgcolor="#ffffff"
               style="background-color: #ffffff; padding: 0 32px 8px 0; vertical-align: middle; white-space: nowrap;">
             <img src="${CDC_CONFIG.assets.phone}"
                  width="24" height="24" alt="Phone"
@@ -98,7 +103,7 @@ function buildAppleMailSignature(data) {
                      white-space: nowrap; background-color: #ffffff;"
             >${_phoneDisplay(phone)}</a>
           </td>
-          <td valign="middle" bgcolor="#ffffff"
+          <td width="290" valign="middle" bgcolor="#ffffff"
               style="background-color: #ffffff; padding: 0 0 8px 0; vertical-align: middle; white-space: nowrap;">
             <img src="${CDC_CONFIG.assets.email}"
                  width="24" height="24" alt="Email"
@@ -113,7 +118,7 @@ function buildAppleMailSignature(data) {
         </tr>
         <!-- Row 2: corporate address | website -->
         <tr>
-          <td valign="middle" bgcolor="#ffffff"
+          <td width="290" valign="middle" bgcolor="#ffffff"
               style="background-color: #ffffff; padding: 0 32px 0 0; vertical-align: middle; white-space: nowrap;">
             <img src="${CDC_CONFIG.assets.location}"
                  width="24" height="24" alt="Location"
@@ -124,7 +129,7 @@ function buildAppleMailSignature(data) {
                      background-color: #ffffff;"
             >${_esc(resolvedAddress)}</span>
           </td>
-          <td valign="middle" bgcolor="#ffffff"
+          <td width="290" valign="middle" bgcolor="#ffffff"
               style="background-color: #ffffff; padding: 0; vertical-align: middle; white-space: nowrap;">
             <img src="${CDC_CONFIG.assets.web}"
                  width="24" height="24" alt="Website"
